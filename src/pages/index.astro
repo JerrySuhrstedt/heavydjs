@@ -193,12 +193,14 @@ const valueProps = [
     }
   }
 
-  /* Did your last event fall flat — original column is ~509px, which is what
-     keeps the heading stacked over three lines */
+  /* Did your last event fall flat — the original is two equal 509px columns
+     pinned to the container edges; equal widths are what keep the heading
+     stacked over three lines and the first list item wrapping to two */
   .problem-grid {
     display: grid;
-    grid-template-columns: minmax(0, 509px) 1fr;
-    gap: 3rem;
+    grid-template-columns: repeat(2, minmax(0, 509px));
+    justify-content: space-between;
+    gap: 2.5rem;
     align-items: start;
   }
 
