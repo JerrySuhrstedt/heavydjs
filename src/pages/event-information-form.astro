@@ -1,0 +1,44 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import EventForm from "../components/EventForm.astro";
+---
+
+<BaseLayout
+  title="Event Information Form - Heavy DJs"
+  description="Tell us about your event and we'll follow up with availability and pricing."
+>
+  <section class="form-hero">
+    <div class="container reveal">
+      <p class="eyebrow">Let's Get Started</p>
+      <h1>Event Information Form</h1>
+      <p class="form-sub">Share a few details and we'll follow up with availability and next steps.</p>
+    </div>
+  </section>
+
+  <section class="form-section">
+    <div class="container form-wrap reveal">
+      <EventForm cta="Submit" />
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .form-hero {
+    text-align: center;
+  }
+
+  .form-hero h1 {
+    font-size: clamp(2.2rem, 4.5vw, 3.2rem);
+    margin: 0.5rem 0 1rem;
+  }
+
+  .form-sub {
+    color: var(--ink-soft);
+    max-width: 50ch;
+    margin-inline: auto;
+  }
+
+  .form-wrap {
+    max-width: 480px;
+  }
+</style>

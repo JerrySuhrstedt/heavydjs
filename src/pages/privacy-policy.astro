@@ -1,0 +1,79 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+const lastUpdated = "August 10, 2026";
+---
+
+<BaseLayout title="Privacy Policy - Heavy DJs" description="Heavy DJs privacy policy.">
+  <section class="policy-hero">
+    <div class="container reveal">
+      <p class="eyebrow">Legal</p>
+      <h1>Privacy Policy</h1>
+      <p class="policy-updated">Last updated: {lastUpdated}</p>
+    </div>
+  </section>
+
+  <section class="policy-body">
+    <div class="container policy-content reveal">
+      <p>
+        Heavy DJs ("we," "us," or "our") respects your privacy. This policy explains what
+        information we collect through heavydjs.com and how we use it.
+      </p>
+
+      <h2>Information We Collect</h2>
+      <p>
+        When you submit a contact form, request a quote, or fill out our event information form,
+        we collect the information you provide — typically your name, email address, and event
+        date. We do not collect payment information through this site.
+      </p>
+
+      <h2>How We Use Your Information</h2>
+      <p>
+        We use the information you provide to respond to your inquiry, prepare quotes, and
+        coordinate your event. We do not sell or rent your personal information to third parties.
+      </p>
+
+      <h2>Contact Us</h2>
+      <p>
+        If you have questions about this policy, contact us at
+        <a href="mailto:info@heavydjs.com">info@heavydjs.com</a> or (480) 826-9400.
+      </p>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .policy-hero {
+    text-align: center;
+  }
+
+  .policy-hero h1 {
+    font-size: clamp(2.2rem, 4.5vw, 3rem);
+    margin: 0.5rem 0;
+  }
+
+  .policy-updated {
+    color: var(--ink-soft);
+    font-size: 0.9rem;
+  }
+
+  .policy-content {
+    max-width: 680px;
+    margin-inline: auto;
+  }
+
+  .policy-content h2 {
+    font-size: 1.3rem;
+    margin: 2rem 0 0.75rem;
+  }
+
+  .policy-content p {
+    color: var(--ink-soft);
+    margin-bottom: 1rem;
+  }
+
+  .policy-content a {
+    color: var(--pink);
+    font-weight: 600;
+  }
+</style>

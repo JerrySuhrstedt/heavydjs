@@ -1,0 +1,60 @@
+---
+interface Props {
+  action?: string;
+  cta?: string;
+}
+
+const { action = "/thank-you/", cta = "Request a Quote" } = Astro.props;
+---
+
+<form class="card event-form" action={action} method="get">
+  <label>
+    Full Name
+    <input type="text" name="name" placeholder="Your full name" required />
+  </label>
+  <label>
+    Email
+    <input type="email" name="email" placeholder="you@email.com" required />
+  </label>
+  <label>
+    Event Date
+    <input type="date" name="event-date" required />
+  </label>
+  <button type="submit" class="btn btn-primary">{cta}</button>
+  <p class="form-note">More event details can be added to this form later — for now this gets us your basics.</p>
+</form>
+
+<style>
+  .event-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.1rem;
+  }
+
+  .event-form label {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    font-weight: 600;
+    font-size: 0.9rem;
+  }
+
+  .event-form input {
+    font: inherit;
+    padding: 0.75rem 0.9rem;
+    border-radius: var(--radius-sm);
+    border: 1px solid rgb(23 20 15 / 0.15);
+    background: var(--cream);
+    color: var(--ink);
+  }
+
+  .event-form input:focus {
+    outline: 2px solid var(--pink);
+    outline-offset: 1px;
+  }
+
+  .form-note {
+    font-size: 0.8rem;
+    color: var(--ink-soft);
+  }
+</style>

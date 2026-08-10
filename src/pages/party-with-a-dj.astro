@@ -1,0 +1,95 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+const steps = [
+  "Select your party package below, then submit (you're not locked in).",
+  "We check our calendar for open dates.",
+  "We'll return your DJ agreement with your discount, plus a deposit request to lock in your date.",
+  "You pay the final balance 10 days before your event date.",
+  "We show up and party!",
+];
+---
+
+<BaseLayout
+  title="Party With A DJ - Heavy DJs"
+  description="See our DJ packages and lock in your date with Heavy DJs — available anywhere in the Phoenix Valley."
+>
+  <section class="party-hero">
+    <div class="container reveal">
+      <p class="eyebrow">DJ Services Now 20% Off Prices Shown!</p>
+      <h1>We make your party an event to remember!</h1>
+      <p class="party-sub">Available anywhere in the Phoenix Valley</p>
+      <a href="/dj-services/" class="btn btn-primary">See DJ Packages</a>
+    </div>
+  </section>
+
+  <section class="how-it-works">
+    <div class="container">
+      <h2>How it works:</h2>
+      <ol class="steps-list">
+        {steps.map((step) => <li class="card reveal">{step}</li>)}
+      </ol>
+      <a href="/contact/" class="btn btn-outline">Get In Touch</a>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .party-hero {
+    text-align: center;
+  }
+
+  .party-hero h1 {
+    font-size: clamp(2.2rem, 5vw, 3.2rem);
+    margin: 0.5rem 0 1rem;
+  }
+
+  .party-sub {
+    color: var(--ink-soft);
+    margin-bottom: 1.5rem;
+  }
+
+  .how-it-works h2 {
+    font-size: clamp(1.6rem, 3.5vw, 2.2rem);
+    margin-bottom: 1.5rem;
+    text-align: center;
+  }
+
+  .steps-list {
+    counter-reset: step;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    max-width: 640px;
+    margin: 0 auto 2rem;
+    padding: 0;
+    list-style: none;
+  }
+
+  .steps-list li {
+    counter-increment: step;
+    position: relative;
+    padding-left: 2.75rem;
+  }
+
+  .steps-list li::before {
+    content: counter(step);
+    position: absolute;
+    left: 1.25rem;
+    top: 1.15rem;
+    width: 1.75rem;
+    height: 1.75rem;
+    border-radius: 50%;
+    background: var(--pink);
+    color: var(--cream-soft);
+    font-weight: 700;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .how-it-works {
+    text-align: center;
+  }
+</style>

@@ -1,6 +1,7 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import Photo from "../components/Photo.astro";
+import EventForm from "../components/EventForm.astro";
 ---
 
 <BaseLayout title="Contact - Heavy DJs" description="Get in touch with Heavy DJs, based in Chandler, Arizona.">
@@ -13,26 +14,9 @@ import Photo from "../components/Photo.astro";
 
   <section class="contact-main">
     <div class="container contact-grid">
-      <form class="card contact-form reveal">
-        <label>
-          Name
-          <input type="text" name="name" placeholder="Your name" required />
-        </label>
-        <label>
-          Email
-          <input type="email" name="email" placeholder="you@email.com" required />
-        </label>
-        <label>
-          Event Date
-          <input type="date" name="event-date" />
-        </label>
-        <label>
-          Tell us about your event
-          <textarea name="message" rows="5" placeholder="Wedding, corporate event, private party..."></textarea>
-        </label>
-        <button type="submit" class="btn btn-primary">Request a Quote</button>
-        <p class="form-note">This form isn't wired up to send yet — connect it to your booking backend when ready.</p>
-      </form>
+      <div class="reveal">
+        <EventForm cta="Request a Quote" />
+      </div>
 
       <div class="contact-side">
         <Photo src="/images/contact-house-party.webp" alt="Heavy DJs house party" ratio="768 / 669" class="reveal" />
@@ -62,42 +46,6 @@ import Photo from "../components/Photo.astro";
     grid-template-columns: 1.1fr 0.9fr;
     gap: 2.5rem;
     align-items: start;
-  }
-
-  .contact-form {
-    display: flex;
-    flex-direction: column;
-    gap: 1.1rem;
-  }
-
-  .contact-form label {
-    display: flex;
-    flex-direction: column;
-    gap: 0.4rem;
-    font-weight: 600;
-    font-size: 0.9rem;
-  }
-
-  .contact-form input,
-  .contact-form textarea {
-    font: inherit;
-    padding: 0.75rem 0.9rem;
-    border-radius: var(--radius-sm);
-    border: 1px solid rgb(23 20 15 / 0.15);
-    background: var(--cream);
-    color: var(--ink);
-    resize: vertical;
-  }
-
-  .contact-form input:focus,
-  .contact-form textarea:focus {
-    outline: 2px solid var(--pink);
-    outline-offset: 1px;
-  }
-
-  .form-note {
-    font-size: 0.8rem;
-    color: var(--ink-soft);
   }
 
   .contact-side {
