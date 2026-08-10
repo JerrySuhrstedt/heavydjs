@@ -154,15 +154,27 @@ section {
   box-shadow: var(--shadow-lift);
 }
 
-.reveal {
+/* Scroll-reveal is a progressive enhancement: the hidden state only applies
+   once the head script confirms JS + IntersectionObserver are available.
+   Without that gate, any failure of the observer leaves content permanently
+   invisible. */
+.js-reveal .reveal {
   opacity: 0;
   transform: translateY(18px);
   transition: opacity 0.6s ease, transform 0.6s ease;
 }
 
-.reveal.is-visible {
+.js-reveal .reveal.is-visible {
   opacity: 1;
   transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .js-reveal .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
 }
 
 .pill-tag {

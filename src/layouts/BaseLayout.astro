@@ -32,6 +32,13 @@ const { title, description = "Heavy DJs — Phoenix area wedding, corporate, and
       rel="stylesheet"
     />
     <slot name="head" />
+    <script is:inline>
+      // Gate the scroll-reveal hidden state on JS + IntersectionObserver being
+      // available, so content is never left invisible if either is missing.
+      if ("IntersectionObserver" in window) {
+        document.documentElement.classList.add("js-reveal");
+      }
+    </script>
   </head>
   <body>
     <Nav />
@@ -40,7 +47,9 @@ const { title, description = "Heavy DJs — Phoenix area wedding, corporate, and
     </main>
     <Footer />
     <script>
-      const revealEls = document.querySelectorAll(".reveal");
+      const revealEls = document.querySelectorAll<HTMLElement>(".reveal");
+      const revealAll = () => revealEls.forEach((el) => el.classList.add("is-visible"));
+
       const observer = new IntersectionObserver(
         (entries) => {
           for (const entry of entries) {
@@ -53,6 +62,12 @@ const { title, description = "Heavy DJs — Phoenix area wedding, corporate, and
         { threshold: 0.15 }
       );
       revealEls.forEach((el) => observer.observe(el));
+
+      // Safety net: if the observer never delivers (suspended renderer, odd
+      // embedding), show everything rather than leaving the page blank.
+      setTimeout(() => {
+        if (!document.querySelector(".reveal.is-visible")) revealAll();
+      }, 2500);
     </script>
   </body>
 </html>
