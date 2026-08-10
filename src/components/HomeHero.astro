@@ -1,0 +1,83 @@
+---
+import Sparkle from "./Sparkle.astro";
+---
+
+<section class="hero">
+  <div class="container hero-inner">
+    <Sparkle color="var(--pink)" size={34} class="deco deco-1" />
+    <Sparkle color="var(--blue)" size={22} class="deco deco-2" />
+    <Sparkle color="var(--orange)" size={26} class="deco deco-3" />
+    <Sparkle color="var(--yellow)" size={18} class="deco deco-4" />
+
+    <p class="eyebrow">Phoenix Area Wedding &amp; Event DJs</p>
+    <h1>Where music meets magic&hellip; and memories are made</h1>
+    <p class="hero-sub">We turn your wedding, corporate event, or private party into a celebration.</p>
+    <a href="/dj-services/" class="btn btn-primary hero-cta">See DJ Packages</a>
+  </div>
+</section>
+
+<style>
+  .hero {
+    position: relative;
+    padding-block: clamp(3.5rem, 9vw, 7rem) clamp(2.5rem, 6vw, 4rem);
+    overflow: hidden;
+  }
+
+  .hero-inner {
+    position: relative;
+    max-width: 900px;
+    text-align: center;
+    margin-inline: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.25rem;
+  }
+
+  h1 {
+    font-size: clamp(2.6rem, 7vw, 5rem);
+    font-weight: 600;
+  }
+
+  .hero-sub {
+    font-size: clamp(1.05rem, 2vw, 1.3rem);
+    color: var(--ink-soft);
+    max-width: 46ch;
+  }
+
+  .hero-cta {
+    margin-top: 1rem;
+    font-size: 1.05rem;
+  }
+
+  .deco {
+    position: absolute;
+    pointer-events: none;
+  }
+
+  .deco-1 {
+    top: -10px;
+    left: 4%;
+  }
+
+  .deco-2 {
+    top: 20%;
+    left: 12%;
+  }
+
+  .deco-3 {
+    top: 4%;
+    right: 6%;
+  }
+
+  .deco-4 {
+    bottom: 6%;
+    right: 16%;
+  }
+
+  @media (max-width: 640px) {
+    .deco {
+      display: none;
+    }
+  }
+</style>

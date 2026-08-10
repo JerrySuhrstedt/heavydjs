@@ -1,0 +1,153 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Photo from "../components/Photo.astro";
+import Sparkle from "../components/Sparkle.astro";
+---
+
+<BaseLayout title="About - Heavy DJs" description="Meet JJ Nite, senior DJ and emcee behind Heavy DJs in Chandler, Arizona.">
+  <section class="about-hero">
+    <div class="container about-hero-inner">
+      <p class="eyebrow">About Us</p>
+      <h1>JJ Nite</h1>
+      <p class="role">Senior DJ &amp; Emcee</p>
+    </div>
+  </section>
+
+  <section class="about-bio">
+    <div class="container bio-inner">
+      <Photo src="/images/about-jj-suit.webp" alt="JJ Nite, senior DJ and emcee at Heavy DJs" ratio="768 / 885" class="reveal" />
+      <div class="bio-copy reveal">
+        <p>
+          With over three decades of experience, JJ Nite has become a renowned DJ and emcee, known
+          for delivering unforgettable entertainment experiences.
+        </p>
+        <p>
+          For the past 18 years, JJ Nite has worked as a mobile DJ and emcee, entertaining at more
+          than 100 events, including his time as an on-air personality for Funk Republic Radio.
+        </p>
+        <p>
+          Today, as the principal senior DJ and emcee at HEAVY DJs in Chandler, Arizona, JJ Nite
+          brings his vast experience and passion for music to every wedding, corporate event, and
+          private party he plays.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="about-stars">
+    <div class="container stars-inner">
+      <Sparkle color="var(--pink)" size={24} class="deco" />
+      <p class="eyebrow">Emcee to the stars</p>
+      <h2>A stage full of legends</h2>
+      <Photo
+        src="/images/about-jj-funk.webp"
+        alt="JJ Nite performing"
+        ratio="768 / 457"
+        class="stars-photo reveal"
+      />
+      <p class="stars-copy">
+        In addition to his DJ work, JJ Nite has had the honor of emceeing concerts for legendary
+        bands such as
+        <a href="https://en.wikipedia.org/wiki/Bar-Kays" target="_blank" rel="noopener">The Bar-Kays</a>,
+        <a href="https://en.wikipedia.org/wiki/Average_White_Band" target="_blank" rel="noopener">Average White Band</a>,
+        <a href="https://en.wikipedia.org/wiki/Tower_of_Power" target="_blank" rel="noopener">Tower of Power</a>,
+        and
+        <a href="https://en.wikipedia.org/wiki/The_Isley_Brothers" target="_blank" rel="noopener">Isley Brothers</a>.
+      </p>
+    </div>
+  </section>
+
+  <section class="about-cta">
+    <div class="container reveal">
+      <h2>Ready to get started?</h2>
+      <a href="/contact/" class="btn btn-primary">Request a Quote</a>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .about-hero {
+    text-align: center;
+  }
+
+  .about-hero-inner h1 {
+    font-size: clamp(2.6rem, 6vw, 4rem);
+    margin: 0.5rem 0;
+  }
+
+  .role {
+    font-weight: 700;
+    color: var(--pink);
+    font-size: 1.1rem;
+  }
+
+  .bio-inner {
+    display: grid;
+    grid-template-columns: 0.8fr 1fr;
+    gap: 3rem;
+    align-items: center;
+  }
+
+  .bio-copy p {
+    color: var(--ink-soft);
+    margin-bottom: 1rem;
+  }
+
+  .about-stars {
+    background: var(--ink);
+    color: var(--cream);
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .stars-inner {
+    max-width: 700px;
+    margin-inline: auto;
+    position: relative;
+  }
+
+  .stars-inner .eyebrow {
+    color: var(--yellow);
+  }
+
+  .stars-inner h2 {
+    font-size: clamp(1.8rem, 4vw, 2.6rem);
+    margin: 0.5rem 0 1.25rem;
+  }
+
+  .stars-photo {
+    max-width: 480px;
+    margin: 0 auto 1.5rem;
+  }
+
+  .stars-copy {
+    color: rgb(250 241 228 / 0.8);
+  }
+
+  .stars-copy a {
+    color: var(--blue);
+    text-decoration: underline;
+  }
+
+  .deco {
+    position: absolute;
+    top: -10px;
+    right: 8%;
+  }
+
+  .about-cta {
+    text-align: center;
+  }
+
+  .about-cta h2 {
+    font-size: clamp(1.9rem, 4vw, 2.6rem);
+    margin-bottom: 1.5rem;
+  }
+
+  @media (max-width: 720px) {
+    .bio-inner {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

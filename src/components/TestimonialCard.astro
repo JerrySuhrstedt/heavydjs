@@ -1,0 +1,50 @@
+---
+import type { Testimonial } from "../data/testimonials";
+
+interface Props {
+  testimonial: Testimonial;
+}
+
+const { testimonial } = Astro.props;
+---
+
+<figure class="testimonial card reveal">
+  <div class="stars" aria-hidden="true">{"★".repeat(testimonial.rating ?? 5)}</div>
+  <blockquote>&ldquo;{testimonial.quote}&rdquo;</blockquote>
+  <figcaption>
+    <span class="name">{testimonial.name}</span>
+    {testimonial.location && <span class="location">{testimonial.location}</span>}
+  </figcaption>
+</figure>
+
+<style>
+  .testimonial {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .stars {
+    color: var(--orange);
+    font-size: 1rem;
+    letter-spacing: 0.15em;
+  }
+
+  blockquote {
+    margin: 0;
+    font-size: 1.02rem;
+    color: var(--ink-soft);
+  }
+
+  figcaption {
+    display: flex;
+    flex-direction: column;
+    font-weight: 700;
+  }
+
+  .location {
+    font-weight: 500;
+    color: var(--ink-soft);
+    font-size: 0.9rem;
+  }
+</style>

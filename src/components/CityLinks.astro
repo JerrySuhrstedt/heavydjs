@@ -1,0 +1,60 @@
+---
+import { arizonaLocalLinks } from "../data/cities";
+---
+
+<section class="local-section">
+  <div class="container local-inner">
+    <h2>We're Arizona Local</h2>
+    <ul class="local-links">
+      {
+        arizonaLocalLinks.map((link) => (
+          <li>
+            <a href={link.href}>{link.label}</a>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>
+
+<style>
+  .local-section {
+    background: var(--ink);
+    color: var(--cream);
+    padding-block: 3rem;
+  }
+
+  .local-inner {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1.5rem 2.5rem;
+  }
+
+  .local-section h2 {
+    font-size: 1.5rem;
+    white-space: nowrap;
+  }
+
+  .local-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+  }
+
+  .local-links a {
+    display: inline-flex;
+    padding: 0.5rem 1rem;
+    border-radius: var(--radius-pill);
+    background: rgb(250 241 228 / 0.1);
+    color: var(--cream);
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 600;
+    transition: background 0.2s ease;
+  }
+
+  .local-links a:hover {
+    background: var(--pink);
+  }
+</style>

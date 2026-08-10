@@ -1,0 +1,28 @@
+---
+interface Props {
+  src: string;
+  alt: string;
+  ratio?: string;
+  class?: string;
+}
+
+const { src, alt, ratio = "4 / 3", class: className = "" } = Astro.props;
+---
+
+<div class={`photo ${className}`} style={`aspect-ratio: ${ratio};`}>
+  <img src={src} alt={alt} loading="lazy" />
+</div>
+
+<style>
+  .photo {
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    box-shadow: var(--shadow-soft);
+  }
+
+  .photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+</style>

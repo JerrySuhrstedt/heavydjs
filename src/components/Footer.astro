@@ -1,0 +1,108 @@
+---
+import { arizonaLocalLinks } from "../data/cities";
+
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+  <div class="container footer-top">
+    <div class="footer-brand">
+      <img src="/images/logo-white-block.webp" alt="Heavy DJs" width="72" height="72" class="footer-logo" />
+      <p>Where music meets magic, and memories are made.</p>
+    </div>
+
+    <ul class="footer-contact">
+      <li>Chandler Arizona</li>
+      <li><a href="tel:+14808269400">(480) 826-9400</a></li>
+      <li><a href="mailto:info@heavydjs.com">info@heavydjs.com</a></li>
+    </ul>
+
+    <nav class="footer-nav" aria-label="Footer">
+      <a href="/dj-services/">DJ Services</a>
+      <a href="/about/">About</a>
+      <a href="/store/">Heavy DJ Apparel</a>
+      <a href="/contact/">Contact</a>
+    </nav>
+
+    <nav class="footer-local" aria-label="Arizona local pages">
+      <p class="footer-local-title">We're Arizona Local</p>
+      {arizonaLocalLinks.map((link) => <a href={link.href}>{link.label}</a>)}
+    </nav>
+  </div>
+
+  <div class="container footer-bottom">
+    <p>©{year} All Rights Reserved | SumoLab LLC</p>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    background: var(--ink);
+    color: var(--cream);
+    padding-block: 3.5rem 1.5rem;
+  }
+
+  .footer-top {
+    display: grid;
+    grid-template-columns: 1.3fr 1fr 1fr 1fr;
+    gap: 2.5rem;
+  }
+
+  .footer-logo {
+    margin-bottom: 0.75rem;
+    border-radius: var(--radius-sm);
+  }
+
+  .footer-brand p:last-child {
+    color: rgb(250 241 228 / 0.7);
+    max-width: 26ch;
+  }
+
+  .footer-contact,
+  .footer-nav,
+  .footer-local {
+    display: flex;
+    flex-direction: column;
+    gap: 0.65rem;
+    font-size: 0.95rem;
+  }
+
+  .footer-contact a,
+  .footer-nav a,
+  .footer-local a {
+    color: rgb(250 241 228 / 0.85);
+    text-decoration: none;
+  }
+
+  .footer-contact a:hover,
+  .footer-nav a:hover,
+  .footer-local a:hover {
+    color: var(--pink);
+  }
+
+  .footer-local-title {
+    font-weight: 700;
+    color: var(--cream);
+    margin-bottom: 0.25rem;
+  }
+
+  .footer-bottom {
+    margin-top: 3rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid rgb(250 241 228 / 0.15);
+    font-size: 0.85rem;
+    color: rgb(250 241 228 / 0.6);
+  }
+
+  @media (max-width: 860px) {
+    .footer-top {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  @media (max-width: 520px) {
+    .footer-top {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

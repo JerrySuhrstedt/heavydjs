@@ -1,0 +1,126 @@
+---
+import Sparkle from "./Sparkle.astro";
+
+interface Props {
+  city: string;
+  serviceLabel: string;
+}
+
+const { city, serviceLabel } = Astro.props;
+---
+
+<section class="city-hero">
+  <div class="container city-hero-inner">
+    <Sparkle color="var(--blue)" size={26} class="deco deco-1" />
+    <Sparkle color="var(--pink)" size={20} class="deco deco-2" />
+
+    <p class="eyebrow">
+      Ultimate {serviceLabel} {city} AZ | Unforgettable Events Everyone Will Talk About
+    </p>
+    <h1>Make Your Event the Ultimate Party Everyone Talks About</h1>
+    <p class="city-hero-sub">
+      Your {serviceLabel} {city} AZ
+    </p>
+
+    <p class="city-hero-body">
+      With 25 years of experience, HEAVY DJs bring the beats, the energy, and the perfect vibe to
+      your wedding, corporate event, or private party.
+    </p>
+    <p class="city-hero-body">
+      We know how to keep the dance floor packed and ensure that every moment flows seamlessly,
+      from the first announcement to the last song of the night.
+    </p>
+    <p class="city-hero-body">
+      Beyond just playing music, we pride ourselves on creating unforgettable experiences tailored
+      to your event's unique style and needs.
+    </p>
+    <p class="city-hero-body">
+      Whether it's an elegant wedding reception, a high-energy corporate event, or a laid-back
+      private party, our DJs and emcees will keep your guests entertained, engaged, and talking
+      about your event long after it's over.
+    </p>
+
+    <ul class="city-hero-list">
+      <li>A packed dance floor filled with happy guests</li>
+      <li>Seamless event flow, thanks to professional emceeing</li>
+      <li>Music tailored to your crowd, making your event truly fun</li>
+    </ul>
+
+    <a href="/contact/" class="btn btn-primary">Have questions? Let's talk!</a>
+  </div>
+</section>
+
+<style>
+  .city-hero {
+    position: relative;
+    padding-block: clamp(3rem, 7vw, 5rem);
+    overflow: hidden;
+  }
+
+  .city-hero-inner {
+    max-width: 760px;
+    margin-inline: auto;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.1rem;
+  }
+
+  h1 {
+    font-size: clamp(2.2rem, 5vw, 3.4rem);
+    font-weight: 600;
+  }
+
+  .city-hero-sub {
+    font-weight: 700;
+    font-size: 1.2rem;
+    color: var(--pink);
+  }
+
+  .city-hero-body {
+    color: var(--ink-soft);
+    max-width: 60ch;
+  }
+
+  .city-hero-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    align-items: center;
+    margin-top: 0.5rem;
+  }
+
+  .city-hero-list li {
+    padding-left: 1.5rem;
+    position: relative;
+  }
+
+  .city-hero-list li::before {
+    content: "✓";
+    position: absolute;
+    left: 0;
+    color: var(--blue);
+    font-weight: 700;
+  }
+
+  .deco {
+    position: absolute;
+  }
+
+  .deco-1 {
+    top: 0;
+    right: 10%;
+  }
+
+  .deco-2 {
+    bottom: 10%;
+    left: 8%;
+  }
+
+  @media (max-width: 640px) {
+    .deco {
+      display: none;
+    }
+  }
+</style>

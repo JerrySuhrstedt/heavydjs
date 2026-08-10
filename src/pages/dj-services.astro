@@ -1,0 +1,189 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import FeatureGrid from "../components/FeatureGrid.astro";
+import Faq from "../components/Faq.astro";
+import { packages } from "../data/packages";
+---
+
+<BaseLayout
+  title="DJ Services - Heavy DJs"
+  description="Mobile DJ services & theme packages for weddings, corporate events, and private parties across the Phoenix Valley."
+>
+  <section class="services-hero">
+    <div class="container reveal">
+      <p class="eyebrow">DJ Packages</p>
+      <h1>Mobile DJ Services &amp; Theme Packages</h1>
+      <p class="services-sub">
+        With over 20 years of experience, HEAVY DJs delivers high-energy mobile DJ and emcee
+        services for weddings, corporate events, and private parties serving the Phoenix Valley.
+        All packages include a professional, experienced DJ/Emcee, curated music list, and
+        professional audio equipment delivered to your event — setup and tear down included at no
+        extra cost.
+      </p>
+    </div>
+  </section>
+
+  <section class="packages-section">
+    <div class="container packages-list">
+      {
+        packages.map((pkg) => (
+          <div class="card package-card reveal" style={`--accent: var(--${pkg.accent});`}>
+            <div class="package-emoji" aria-hidden="true">
+              {pkg.emoji}
+            </div>
+            <div class="package-body">
+              <h2>{pkg.name}</h2>
+              {pkg.subtitle && <p class="package-subtitle">{pkg.subtitle}</p>}
+              {pkg.intro.map((p) => (
+                <p class="package-intro">{p}</p>
+              ))}
+              <p class="package-includes-label">What's included:</p>
+              <ul class="package-bullets">
+                {pkg.includes.map((b) => (
+                  <li>{b}</li>
+                ))}
+              </ul>
+              <div class="package-footer">
+                <div class="package-price">
+                  <span class="price-amount">${pkg.basePrice}</span>
+                  <span class="price-detail">
+                    {pkg.baseHours} hrs · ${pkg.rate}/hr after
+                  </span>
+                </div>
+                <a href="/contact/" class="btn btn-primary package-btn">
+                  Request a Quote
+                </a>
+              </div>
+            </div>
+          </div>
+        ))
+      }
+    </div>
+  </section>
+
+  <FeatureGrid />
+  <Faq />
+</BaseLayout>
+
+<style>
+  .services-hero {
+    text-align: center;
+  }
+
+  .services-hero h1 {
+    font-size: clamp(2.4rem, 5vw, 3.4rem);
+    margin: 0.5rem 0 1rem;
+  }
+
+  .services-sub {
+    color: var(--ink-soft);
+    max-width: 68ch;
+    margin-inline: auto;
+    font-size: 1.05rem;
+  }
+
+  .packages-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .package-card {
+    display: grid;
+    grid-template-columns: 96px 1fr;
+    gap: 1.5rem;
+  }
+
+  .package-emoji {
+    width: 96px;
+    height: 96px;
+    border-radius: var(--radius-md);
+    background: linear-gradient(135deg, var(--accent), var(--cream-soft));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.5rem;
+  }
+
+  .package-body h2 {
+    font-size: 1.4rem;
+    margin-bottom: 0.25rem;
+  }
+
+  .package-subtitle {
+    color: var(--accent);
+    font-weight: 700;
+    font-size: 0.9rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .package-intro {
+    color: var(--ink-soft);
+    margin-bottom: 0.75rem;
+  }
+
+  .package-includes-label {
+    font-weight: 700;
+    font-size: 0.9rem;
+    margin: 0.75rem 0 0.5rem;
+  }
+
+  .package-bullets {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .package-bullets li {
+    padding-left: 1.4rem;
+    position: relative;
+    font-size: 0.92rem;
+    color: var(--ink-soft);
+  }
+
+  .package-bullets li::before {
+    content: "✓";
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  .package-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;
+    border-top: 1px solid rgb(23 20 15 / 0.08);
+    padding-top: 1.1rem;
+  }
+
+  .package-price {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .price-amount {
+    font-family: var(--font-display);
+    font-size: 1.6rem;
+    font-weight: 700;
+  }
+
+  .price-detail {
+    font-size: 0.82rem;
+    color: var(--ink-soft);
+  }
+
+  @media (max-width: 640px) {
+    .package-card {
+      grid-template-columns: 1fr;
+    }
+
+    .package-emoji {
+      width: 100%;
+      height: 72px;
+    }
+  }
+</style>

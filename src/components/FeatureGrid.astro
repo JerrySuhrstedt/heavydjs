@@ -1,0 +1,60 @@
+---
+import { weFeature } from "../data/features";
+
+const accents = ["pink", "orange", "blue", "yellow"];
+---
+
+<section class="feature-section">
+  <div class="container">
+    <p class="eyebrow">What we bring</p>
+    <h2>We Feature</h2>
+
+    <ul class="feature-grid">
+      {
+        weFeature.map((feature, i) => (
+          <li class="feature-item card reveal" style={`--accent: var(--${accents[i % accents.length]});`}>
+            <span class="feature-dot" />
+            <h3>{feature.title}</h3>
+            <p>{feature.description}</p>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>
+
+<style>
+  .feature-section h2 {
+    font-size: clamp(2rem, 4vw, 2.8rem);
+    margin-top: 0.5rem;
+    margin-bottom: 2.5rem;
+  }
+
+  .feature-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1.25rem;
+  }
+
+  .feature-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+
+  .feature-item h3 {
+    font-size: 1.1rem;
+  }
+
+  .feature-item p {
+    color: var(--ink-soft);
+    font-size: 0.95rem;
+  }
+
+  .feature-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--accent);
+  }
+</style>

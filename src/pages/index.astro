@@ -1,0 +1,351 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import HomeHero from "../components/HomeHero.astro";
+import TestimonialCard from "../components/TestimonialCard.astro";
+import FeatureGrid from "../components/FeatureGrid.astro";
+import Faq from "../components/Faq.astro";
+import Photo from "../components/Photo.astro";
+import Sparkle from "../components/Sparkle.astro";
+import { shortTestimonials, longTestimonials } from "../data/testimonials";
+---
+
+<BaseLayout title="Home - Heavy DJs">
+  <HomeHero />
+
+  <section class="testimonial-strip">
+    <div class="container testimonial-grid">
+      {shortTestimonials.map((t) => <TestimonialCard testimonial={t} />)}
+    </div>
+  </section>
+
+  <section class="split-feature">
+    <div class="container split-inner">
+      <div class="split-copy">
+        <p class="eyebrow">Why book us</p>
+        <div class="split-item reveal">
+          <h2>Packed Dance Floors</h2>
+          <p>We keep the energy high and your guests dancing all night long.</p>
+        </div>
+        <div class="split-item reveal">
+          <h2>Unforgettable Memories</h2>
+          <p>Creating moments your guests will rave about for years to come.</p>
+        </div>
+      </div>
+      <Photo src="/images/home-wedding-dancing.webp" alt="Wedding guests dancing at a Heavy DJs event" class="reveal" />
+    </div>
+  </section>
+
+  <section class="emcee-section">
+    <div class="container emcee-inner">
+      <Photo src="/images/home-dj-mixing.webp" alt="Heavy DJs mixing at an event" class="reveal" />
+      <div class="emcee-copy reveal">
+        <h2>A polished, professional emcee experience</h2>
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut elit tellus, luctus nec
+          ullamcorper mattis, pulvinar dapibus leo.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="trust-trio">
+    <div class="container trust-grid">
+      <div class="trust-item card reveal">
+        <h3>Experienced Professionals</h3>
+        <p>Over 20 years of experience ensures your event is in expert hands.</p>
+      </div>
+      <div class="trust-item card reveal">
+        <h3>Reliability You Can Trust</h3>
+        <p>Punctual, prepared, and always delivering beyond expectations.</p>
+      </div>
+      <div class="trust-item card reveal">
+        <h3>Stress-Free Coordination</h3>
+        <p>We handle the music and flow, so you can focus on enjoying the moment.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="problem-section">
+    <div class="container problem-inner">
+      <Sparkle color="var(--yellow)" size={22} class="deco" />
+      <p class="eyebrow">Did your last event fall flat?</p>
+      <h2>Does this sound familiar?</h2>
+      <ul class="problem-list">
+        <li>The atmosphere feels dull, and guests aren't excited.</li>
+        <li>The playlist isn't connecting with the crowd.</li>
+        <li>There's no flow, and the event feels disorganized.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="dj-bio">
+    <div class="container bio-inner">
+      <Photo src="/images/home-dj-vintage.webp" alt="JJ Nite, senior DJ and emcee at Heavy DJs" ratio="2 / 3" class="reveal bio-photo" />
+      <div class="bio-copy reveal">
+        <p class="eyebrow">We bring the party to your party</p>
+        <img src="/images/jj-nite-banner.webp" alt="JJ Nite" class="jj-banner" />
+        <h2>Senior DJ | Emcee</h2>
+        <p>
+          With over three decades of experience, JJ Nite has become a renowned DJ and emcee, known
+          for delivering unforgettable entertainment experiences. His journey began with 12 years
+          as a radio broadcaster at Seattle's iconic KFOX Radio, where he sharpened his ear for
+          music and cultivated a deep love for funk and soul. As a night club DJ in Seattle, JJ
+          further refined his talent for reading crowds and curating the perfect playlist to match
+          any occasion.
+        </p>
+        <p class="pill-tag">Emcee for Average White Band, Isley Brothers, Tower of Power, Bar-Kays</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="fix-section">
+    <div class="container fix-inner">
+      <div class="fix-copy reveal">
+        <p class="eyebrow">Bring your event to life with Heavy DJs!</p>
+        <h2>Here's how we fix it:</h2>
+        <ul class="fix-list">
+          <li>We read the crowd and play the perfect mix to keep everyone dancing.</li>
+          <li>Our professional emcees ensure smooth transitions and keep your event on track.</li>
+          <li>
+            We create an energetic, unforgettable atmosphere that will have your guests talking
+            long after the party ends.
+          </li>
+        </ul>
+      </div>
+
+      <div class="fix-values">
+        <div class="card reveal">
+          <h3>Personalized Experience</h3>
+          <p>
+            With over 25 years in the industry, we tailor every performance to match your event's
+            vibe and your crowd's energy.
+          </p>
+        </div>
+        <div class="card reveal">
+          <h3>Complete Entertainment</h3>
+          <p>
+            We handle both the music and the flow of your event with expert emceeing, making sure
+            everything runs smoothly.
+          </p>
+        </div>
+        <div class="card reveal">
+          <h3>Crowd Reading Expertise</h3>
+          <p>
+            From weddings to corporate events, we know how to read a room and play the right music
+            to keep everyone engaged and on the dance floor.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <FeatureGrid />
+  <Faq />
+
+  <section class="testimonial-strip testimonial-strip--long">
+    <div class="container testimonial-grid">
+      {longTestimonials.map((t) => <TestimonialCard testimonial={t} />)}
+    </div>
+  </section>
+
+  <section class="final-cta">
+    <div class="container final-cta-inner reveal">
+      <h2>Ready to make your event unforgettable?</h2>
+      <a href="/contact/" class="btn btn-primary">Request a Quote</a>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .testimonial-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .split-inner,
+  .emcee-inner,
+  .bio-inner {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    align-items: center;
+  }
+
+  .emcee-inner {
+    direction: rtl;
+  }
+
+  .emcee-inner > * {
+    direction: ltr;
+  }
+
+  .split-item {
+    margin-bottom: 1.75rem;
+  }
+
+  .split-item h2 {
+    font-size: 1.7rem;
+    margin-bottom: 0.4rem;
+  }
+
+  .split-item p,
+  .emcee-copy p {
+    color: var(--ink-soft);
+  }
+
+  .emcee-copy h2 {
+    font-size: clamp(1.8rem, 3.5vw, 2.4rem);
+    margin-bottom: 0.75rem;
+  }
+
+  .trust-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1.25rem;
+  }
+
+  .trust-item h3 {
+    font-size: 1.15rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .trust-item p {
+    color: var(--ink-soft);
+  }
+
+  .problem-section {
+    background: var(--ink);
+    color: var(--cream);
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .problem-inner {
+    max-width: 640px;
+    margin-inline: auto;
+    position: relative;
+  }
+
+  .problem-inner .eyebrow {
+    color: var(--yellow);
+  }
+
+  .problem-inner h2 {
+    font-size: clamp(1.8rem, 4vw, 2.6rem);
+    margin: 0.5rem 0 1.75rem;
+  }
+
+  .problem-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .problem-list li {
+    background: rgb(250 241 228 / 0.08);
+    border-radius: var(--radius-sm);
+    padding: 0.9rem 1.2rem;
+  }
+
+  .deco {
+    position: absolute;
+    top: -10px;
+    right: 10%;
+  }
+
+  .bio-photo {
+    max-width: 340px;
+  }
+
+  .jj-banner {
+    height: 32px;
+    width: auto;
+    margin: 0.25rem 0 0.75rem;
+  }
+
+  .bio-copy h2 {
+    font-size: clamp(1.8rem, 3.5vw, 2.4rem);
+    margin: 0.4rem 0 1rem;
+  }
+
+  .bio-copy p {
+    color: var(--ink-soft);
+    margin-bottom: 1rem;
+  }
+
+  .fix-inner {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+  }
+
+  .fix-copy h2 {
+    font-size: clamp(1.8rem, 3.5vw, 2.4rem);
+    margin: 0.4rem 0 1.25rem;
+  }
+
+  .fix-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.9rem;
+  }
+
+  .fix-list li {
+    padding-left: 1.6rem;
+    position: relative;
+    color: var(--ink-soft);
+  }
+
+  .fix-list li::before {
+    content: "✓";
+    position: absolute;
+    left: 0;
+    color: var(--pink);
+    font-weight: 700;
+  }
+
+  .fix-values {
+    display: flex;
+    flex-direction: column;
+    gap: 1.1rem;
+  }
+
+  .fix-values h3 {
+    font-size: 1.1rem;
+    margin-bottom: 0.4rem;
+  }
+
+  .fix-values p {
+    color: var(--ink-soft);
+    font-size: 0.95rem;
+  }
+
+  .final-cta {
+    text-align: center;
+  }
+
+  .final-cta-inner h2 {
+    font-size: clamp(1.9rem, 4vw, 2.6rem);
+    margin-bottom: 1.5rem;
+  }
+
+  @media (max-width: 860px) {
+    .split-inner,
+    .emcee-inner,
+    .bio-inner,
+    .fix-inner {
+      grid-template-columns: 1fr;
+    }
+
+    .emcee-inner {
+      direction: ltr;
+    }
+
+    .bio-photo {
+      max-width: 260px;
+      margin-inline: auto;
+    }
+  }
+</style>

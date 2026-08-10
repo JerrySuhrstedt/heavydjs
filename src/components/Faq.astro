@@ -1,0 +1,73 @@
+---
+import { faqItems } from "../data/faq";
+---
+
+<section class="faq-section">
+  <div class="container">
+    <p class="eyebrow">Questions</p>
+    <h2>FAQs</h2>
+
+    <div class="faq-list">
+      {
+        faqItems.map((item, i) => (
+          <details class="faq-item reveal" open={i === 0}>
+            <summary>
+              {item.question}
+              <span class="faq-icon" aria-hidden="true">+</span>
+            </summary>
+            <p>{item.answer}</p>
+          </details>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .faq-section h2 {
+    font-size: clamp(2rem, 4vw, 2.8rem);
+    margin: 0.5rem 0 2.5rem;
+  }
+
+  .faq-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    max-width: 760px;
+  }
+
+  .faq-item {
+    background: var(--cream-soft);
+    border-radius: var(--radius-sm);
+    padding: 1.1rem 1.4rem;
+    box-shadow: var(--shadow-soft);
+  }
+
+  .faq-item summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    font-weight: 700;
+    list-style: none;
+  }
+
+  .faq-item summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .faq-icon {
+    color: var(--pink);
+    font-size: 1.3rem;
+    transition: transform 0.2s ease;
+  }
+
+  .faq-item[open] .faq-icon {
+    transform: rotate(45deg);
+  }
+
+  .faq-item p {
+    margin-top: 0.85rem;
+    color: var(--ink-soft);
+  }
+</style>

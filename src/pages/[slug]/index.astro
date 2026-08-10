@@ -1,0 +1,15 @@
+---
+import CityPageTemplate from "../../components/CityPageTemplate.astro";
+import { cityPages } from "../../data/cities";
+
+export function getStaticPaths() {
+  return cityPages.map((page) => ({
+    params: { slug: page.slug },
+    props: { page },
+  }));
+}
+
+const { page } = Astro.props;
+---
+
+<CityPageTemplate page={page} />

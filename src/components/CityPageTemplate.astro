@@ -1,0 +1,75 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import CityHero from "./CityHero.astro";
+import FeatureGrid from "./FeatureGrid.astro";
+import Faq from "./Faq.astro";
+import CityLinks from "./CityLinks.astro";
+import type { CityPage } from "../data/cities";
+
+interface Props {
+  page: CityPage;
+}
+
+const { page } = Astro.props;
+const { city, serviceLabel } = page;
+---
+
+<BaseLayout
+  title={`Ultimate ${serviceLabel} ${city} AZ | Unforgettable Events Everyone Will Talk About | Heavy DJs`}
+  description={`Heavy DJs brings 25 years of experience as your ${serviceLabel.toLowerCase()} in ${city}, AZ — packed dance floors, seamless emceeing, unforgettable events.`}
+>
+  <CityHero city={city} serviceLabel={serviceLabel} />
+
+  <section class="problem-section">
+    <div class="container problem-inner reveal">
+      <p class="eyebrow">What makes a good DJ?</p>
+      <h2>
+        Ultimate {serviceLabel} {city} AZ | Unforgettable Events Everyone Will Talk About
+      </h2>
+      <p>
+        You've been to those events where the music just didn't connect with the crowd, and the
+        emcee was flat, leaving guests disengaged. It's frustrating and disappointing when your
+        special event lacks energy.
+      </p>
+      <p>
+        Whether it's a wedding reception with guests sitting awkwardly at their tables, a
+        corporate party where no one hits the dance floor, or a private event that feels
+        lifeless—your event deserves better.
+      </p>
+      <p>
+        With Heavy DJs, a premier mobile DJ service in {city}, AZ, you get a master entertainer
+        who reads the room, plays the perfect playlist, and knows exactly how to keep your crowd
+        dancing, laughing, and having a blast. We don't just play music; we create unforgettable
+        experiences.
+      </p>
+    </div>
+  </section>
+
+  <FeatureGrid />
+  <Faq />
+  <CityLinks />
+</BaseLayout>
+
+<style>
+  .problem-section {
+    max-width: 760px;
+    margin-inline: auto;
+    text-align: center;
+  }
+
+  .problem-inner .eyebrow {
+    display: block;
+    margin-bottom: 0.5rem;
+  }
+
+  .problem-inner h2 {
+    font-size: clamp(1.5rem, 3.5vw, 2.1rem);
+    margin-bottom: 1.25rem;
+  }
+
+  .problem-inner p {
+    color: var(--ink-soft);
+    margin-bottom: 1rem;
+    text-align: left;
+  }
+</style>

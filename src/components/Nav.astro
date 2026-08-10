@@ -1,0 +1,230 @@
+---
+const navLinks = [
+  { label: "DJ Services", href: "/dj-services/" },
+  { label: "About", href: "/about/" },
+  { label: "Contact", href: "/contact/" },
+];
+
+const apparelLinks = [
+  { label: "Store", href: "/store/" },
+  { label: "My Account", href: "/account/" },
+  { label: "Checkout", href: "/checkout/" },
+  { label: "Cart", href: "/cart/" },
+];
+---
+
+<header class="site-nav">
+  <div class="container nav-inner">
+    <a href="/" class="brand">
+      <img src="/images/logo-black.webp" alt="Heavy DJs" width="140" height="53" />
+    </a>
+
+    <nav class="nav-links" aria-label="Primary">
+      {navLinks.map((link) => <a href={link.href}>{link.label}</a>)}
+      <div class="dropdown">
+        <button type="button" class="dropdown-trigger">Heavy DJ Apparel</button>
+        <div class="dropdown-menu">
+          {apparelLinks.map((link) => <a href={link.href}>{link.label}</a>)}
+        </div>
+      </div>
+    </nav>
+
+    <a href="/contact/" class="btn btn-primary nav-cta">Get a Quote</a>
+
+    <button class="menu-toggle" type="button" aria-label="Toggle menu" aria-expanded="false">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+  </div>
+
+  <nav class="mobile-menu" aria-label="Mobile">
+    {navLinks.map((link) => <a href={link.href}>{link.label}</a>)}
+    <span class="mobile-menu-label">Heavy DJ Apparel</span>
+    {apparelLinks.map((link) => <a href={link.href} class="mobile-sub-link">{link.label}</a>)}
+    <a href="/contact/" class="btn btn-primary">Get a Quote</a>
+  </nav>
+</header>
+
+<style>
+  .site-nav {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: rgb(250 241 228 / 0.85);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgb(23 20 15 / 0.08);
+  }
+
+  .nav-inner {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    padding-block: 1.1rem;
+  }
+
+  .brand {
+    display: inline-flex;
+    align-items: center;
+    text-decoration: none;
+    color: var(--ink);
+  }
+
+  .brand img {
+    height: 40px;
+    width: auto;
+  }
+
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 1.75rem;
+    margin-left: 1rem;
+    font-weight: 600;
+    font-size: 0.8rem;
+  }
+
+  .nav-links a {
+    text-decoration: none;
+    color: var(--ink);
+    position: relative;
+  }
+
+  .nav-links a::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -4px;
+    width: 100%;
+    height: 2px;
+    background: var(--pink);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.2s ease;
+  }
+
+  .nav-links a:hover::after {
+    transform: scaleX(1);
+  }
+
+  .dropdown {
+    position: relative;
+  }
+
+  .dropdown-trigger {
+    background: none;
+    border: none;
+    font: inherit;
+    font-weight: 600;
+    color: var(--ink);
+    cursor: pointer;
+    padding: 0;
+  }
+
+  .dropdown-menu {
+    position: absolute;
+    top: calc(100% + 0.75rem);
+    left: 0;
+    background: var(--cream-soft);
+    border-radius: var(--radius-sm);
+    box-shadow: var(--shadow-lift);
+    padding: 0.5rem;
+    min-width: 160px;
+    display: none;
+    flex-direction: column;
+  }
+
+  .dropdown:hover .dropdown-menu,
+  .dropdown:focus-within .dropdown-menu {
+    display: flex;
+  }
+
+  .dropdown-menu a {
+    padding: 0.5rem 0.75rem;
+    border-radius: 0.5rem;
+  }
+
+  .dropdown-menu a:hover {
+    background: rgb(23 20 15 / 0.06);
+  }
+
+  .nav-cta {
+    margin-left: auto;
+    padding: 0.65rem 1.4rem;
+    font-size: 0.9rem;
+  }
+
+  .menu-toggle {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.5rem;
+  }
+
+  .menu-toggle span {
+    width: 22px;
+    height: 2px;
+    background: var(--ink);
+  }
+
+  .mobile-menu {
+    display: none;
+    flex-direction: column;
+    gap: 0.25rem;
+    padding: 1rem var(--container, 5%) 1.5rem;
+    font-weight: 600;
+  }
+
+  .mobile-menu a {
+    text-decoration: none;
+    color: var(--ink);
+    padding: 0.6rem 0;
+  }
+
+  .mobile-menu-label {
+    padding-top: 0.6rem;
+    color: var(--ink-soft);
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  .mobile-sub-link {
+    padding-left: 1rem !important;
+    font-weight: 500;
+  }
+
+  .mobile-menu .btn {
+    margin-top: 0.75rem;
+    justify-content: center;
+  }
+
+  @media (max-width: 860px) {
+    .nav-links,
+    .nav-cta {
+      display: none;
+    }
+
+    .menu-toggle {
+      display: flex;
+      margin-left: auto;
+    }
+
+    .site-nav.is-open .mobile-menu {
+      display: flex;
+    }
+  }
+</style>
+
+<script>
+  const toggle = document.querySelector(".menu-toggle");
+  const nav = document.querySelector(".site-nav");
+
+  toggle?.addEventListener("click", () => {
+    const isOpen = nav?.classList.toggle("is-open");
+    toggle.setAttribute("aria-expanded", String(Boolean(isOpen)));
+  });
+</script>
