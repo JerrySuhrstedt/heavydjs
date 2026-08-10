@@ -1,12 +1,13 @@
+/* Palette sampled directly from the original heavydjs.com design. */
 :root {
-  --cream: #faf1e4;
-  --cream-soft: #fff9f0;
-  --ink: #17140f;
+  --cream: #fff6ed;
+  --cream-soft: #fffaf4;
+  --ink: #000000;
   --ink-soft: #4a453c;
-  --pink: #ef5da8;
-  --orange: #f2994a;
-  --blue: #5aa9e6;
-  --yellow: #f7c948;
+  --pink: #ff44cb;
+  --orange: #ff6f00;
+  --blue: #a1cef5;
+  --yellow: #fcaf01;
 
   --radius-sm: 0.6rem;
   --radius-md: 1.25rem;

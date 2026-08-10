@@ -3,14 +3,15 @@ import type { Testimonial } from "../data/testimonials";
 
 interface Props {
   testimonial: Testimonial;
+  variant?: "default" | "blue";
 }
 
-const { testimonial } = Astro.props;
+const { testimonial, variant = "default" } = Astro.props;
 ---
 
-<figure class="testimonial card reveal">
-  <div class="stars" aria-hidden="true">{"★".repeat(testimonial.rating ?? 5)}</div>
+<figure class={`testimonial card reveal ${variant === "blue" ? "testimonial-blue" : ""}`}>
   <blockquote>&ldquo;{testimonial.quote}&rdquo;</blockquote>
+  <div class="stars" aria-hidden="true">{"★".repeat(testimonial.rating ?? 5)}</div>
   <figcaption>
     <span class="name">{testimonial.name}</span>
     {testimonial.location && <span class="location">{testimonial.location}</span>}
@@ -46,5 +47,14 @@ const { testimonial } = Astro.props;
     font-weight: 500;
     color: var(--ink-soft);
     font-size: 0.9rem;
+  }
+
+  .testimonial-blue {
+    background: var(--blue);
+  }
+
+  .testimonial-blue blockquote,
+  .testimonial-blue .location {
+    color: rgb(0 0 0 / 0.75);
   }
 </style>

@@ -1,0 +1,162 @@
+---
+import Photo from "./Photo.astro";
+---
+
+<section class="bento-section">
+  <div class="container bento-grid">
+    <div class="bento-card bento-solid bento-blue bento-tall reveal">
+      <div class="bento-copy">
+        <h2>Packed Dance Floors</h2>
+        <p>We keep the energy high and your guests dancing all night long.</p>
+      </div>
+      <Photo
+        src="/images/home-wedding-dancing.webp"
+        alt="Wedding guests line dancing"
+        ratio="3 / 2"
+        class="bento-inset"
+      />
+    </div>
+
+    <div class="bento-card bento-photo bento-tall reveal" style="--photo: url('/images/bg-girls-dancing.webp');">
+      <div class="bento-copy">
+        <h2>Unforgettable Memories</h2>
+        <p>Creating moments your guests will rave about for years to come.</p>
+      </div>
+    </div>
+
+    <div class="bento-card bento-solid bento-amber bento-tall reveal">
+      <div class="bento-copy">
+        <h2>A polished, professional emcee experience</h2>
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut elit tellus, luctus nec
+          ullamcorper mattis, pulvinar dapibus leo.
+        </p>
+      </div>
+      <Photo src="/images/home-dj-mixing.webp" alt="Heavy DJs mixing" ratio="3 / 2" class="bento-inset" />
+    </div>
+
+    <div class="bento-card bento-photo reveal" style="--photo: url('/images/bento-couple-dance.webp');">
+      <div class="bento-copy">
+        <h2>Experienced Professionals</h2>
+        <p>Over 20 years of experience ensures your event is in expert hands.</p>
+      </div>
+    </div>
+
+    <div class="bento-card bento-solid bento-orange reveal">
+      <svg class="bento-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
+        <circle cx="12" cy="12" r="9"></circle>
+        <path d="M12 7v5l3 2" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+      <div class="bento-copy">
+        <h2>Reliability You Can Trust</h2>
+        <p>Punctual, prepared, and always delivering beyond expectations.</p>
+      </div>
+    </div>
+
+    <div class="bento-card bento-photo reveal" style="--photo: url('/images/bg-party-hands.webp');">
+      <div class="bento-copy">
+        <h2>Stress-Free Coordination</h2>
+        <p>We handle the music and flow, so you can focus on enjoying the moment.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .bento-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.15rem;
+  }
+
+  .bento-card {
+    position: relative;
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    padding: 1.6rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    min-height: 300px;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+  }
+
+  .bento-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lift);
+  }
+
+  .bento-tall {
+    min-height: 440px;
+  }
+
+  .bento-blue {
+    background: var(--blue);
+  }
+
+  .bento-amber {
+    background: var(--yellow);
+  }
+
+  .bento-orange {
+    background: var(--orange);
+    color: #fff;
+  }
+
+  .bento-copy h2 {
+    font-size: 1.45rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .bento-copy p {
+    font-size: 0.95rem;
+    line-height: 1.5;
+  }
+
+  .bento-solid .bento-copy p {
+    color: rgb(0 0 0 / 0.72);
+  }
+
+  .bento-orange .bento-copy p {
+    color: rgb(255 255 255 / 0.9);
+  }
+
+  .bento-inset {
+    margin-top: auto;
+  }
+
+  .bento-icon {
+    width: 40px;
+    height: 40px;
+  }
+
+  /* photo cards: image background with a dark scrim so text stays legible */
+  .bento-photo {
+    color: #fff;
+    justify-content: flex-end;
+    background-image: linear-gradient(to top, rgb(0 0 0 / 0.82) 0%, rgb(0 0 0 / 0.35) 55%, rgb(0 0 0 / 0.15) 100%),
+      var(--photo);
+    background-size: cover;
+    background-position: center;
+  }
+
+  .bento-photo .bento-copy p {
+    color: rgb(255 255 255 / 0.88);
+  }
+
+  @media (max-width: 900px) {
+    .bento-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 600px) {
+    .bento-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .bento-tall {
+      min-height: 340px;
+    }
+  }
+</style>

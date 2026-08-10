@@ -2,11 +2,34 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import HomeHero from "../components/HomeHero.astro";
 import TestimonialCard from "../components/TestimonialCard.astro";
+import BentoGrid from "../components/BentoGrid.astro";
+import Gallery from "../components/Gallery.astro";
 import FeatureGrid from "../components/FeatureGrid.astro";
 import Faq from "../components/Faq.astro";
 import Photo from "../components/Photo.astro";
-import Sparkle from "../components/Sparkle.astro";
 import { shortTestimonials, longTestimonials } from "../data/testimonials";
+
+const bands = [
+  { src: "/images/band-awb.webp", alt: "Average White Band" },
+  { src: "/images/band-isley.webp", alt: "The Isley Brothers" },
+  { src: "/images/band-tower-of-power.webp", alt: "Tower of Power" },
+  { src: "/images/band-barkays.webp", alt: "The Bar-Kays" },
+];
+
+const valueProps = [
+  {
+    title: "Personalized Experience",
+    body: "With over 25 years in the industry, we tailor every performance to match your event's vibe and your crowd's energy.",
+  },
+  {
+    title: "Complete Entertainment",
+    body: "We handle both the music and the flow of your event with expert emceeing, making sure everything runs smoothly.",
+  },
+  {
+    title: "Crowd Reading Expertise",
+    body: "From weddings to corporate events, we know how to read a room and play the right music to keep everyone engaged and on the dance floor.",
+  },
+];
 ---
 
 <BaseLayout title="Home - Heavy DJs">
@@ -18,71 +41,46 @@ import { shortTestimonials, longTestimonials } from "../data/testimonials";
     </div>
   </section>
 
-  <section class="split-feature">
-    <div class="container split-inner">
-      <div class="split-copy">
-        <p class="eyebrow">Why book us</p>
-        <div class="split-item reveal">
-          <h2>Packed Dance Floors</h2>
-          <p>We keep the energy high and your guests dancing all night long.</p>
-        </div>
-        <div class="split-item reveal">
-          <h2>Unforgettable Memories</h2>
-          <p>Creating moments your guests will rave about for years to come.</p>
-        </div>
-      </div>
-      <Photo src="/images/home-wedding-dancing.webp" alt="Wedding guests dancing at a Heavy DJs event" class="reveal" />
-    </div>
-  </section>
-
-  <section class="emcee-section">
-    <div class="container emcee-inner">
-      <Photo src="/images/home-dj-mixing.webp" alt="Heavy DJs mixing at an event" class="reveal" />
-      <div class="emcee-copy reveal">
-        <h2>A polished, professional emcee experience</h2>
-        <p>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut elit tellus, luctus nec
-          ullamcorper mattis, pulvinar dapibus leo.
-        </p>
-      </div>
-    </div>
-  </section>
-
-  <section class="trust-trio">
-    <div class="container trust-grid">
-      <div class="trust-item card reveal">
-        <h3>Experienced Professionals</h3>
-        <p>Over 20 years of experience ensures your event is in expert hands.</p>
-      </div>
-      <div class="trust-item card reveal">
-        <h3>Reliability You Can Trust</h3>
-        <p>Punctual, prepared, and always delivering beyond expectations.</p>
-      </div>
-      <div class="trust-item card reveal">
-        <h3>Stress-Free Coordination</h3>
-        <p>We handle the music and flow, so you can focus on enjoying the moment.</p>
-      </div>
-    </div>
-  </section>
+  <BentoGrid />
 
   <section class="problem-section">
-    <div class="container problem-inner">
-      <Sparkle color="var(--yellow)" size={22} class="deco" />
-      <p class="eyebrow">Did your last event fall flat?</p>
-      <h2>Does this sound familiar?</h2>
-      <ul class="problem-list">
-        <li>The atmosphere feels dull, and guests aren't excited.</li>
-        <li>The playlist isn't connecting with the crowd.</li>
-        <li>There's no flow, and the event feels disorganized.</li>
-      </ul>
+    <div class="container problem-grid">
+      <h2 class="problem-title reveal">Did your Last Event Fall Flat?</h2>
+      <div class="problem-copy reveal">
+        <h3>Does this sound familiar?</h3>
+        <ul class="problem-list">
+          <li>The atmosphere feels dull, and guests aren't excited.</li>
+          <li>The playlist isn't connecting with the crowd.</li>
+          <li>There's no flow, and the event feels disorganized.</li>
+        </ul>
+      </div>
     </div>
   </section>
 
-  <section class="dj-bio">
-    <div class="container bio-inner">
-      <Photo src="/images/home-dj-vintage.webp" alt="JJ Nite, senior DJ and emcee at Heavy DJs" ratio="2 / 3" class="reveal bio-photo" />
+  <Gallery />
+
+  <section class="video-section">
+    <div class="container">
+      <h2 class="video-title reveal">We bring the party to your party</h2>
+      <div class="video-frame reveal">
+        <iframe
+          src="https://www.youtube-nocookie.com/embed/P6H_e8Rh21w"
+          title="Heavy DJs | Mobile DJ Service"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen></iframe>
+      </div>
+    </div>
+  </section>
+
+  <section class="bio-section">
+    <div class="container bio-grid">
+      <Photo
+        src="/images/home-dj-vintage.webp"
+        alt="JJ Nite behind the decks"
+        ratio="1 / 1"
+        class="bio-photo reveal"
+      />
       <div class="bio-copy reveal">
-        <p class="eyebrow">We bring the party to your party</p>
         <img src="/images/jj-nite-banner.webp" alt="JJ Nite" class="jj-banner" />
         <h2>Senior DJ | Emcee</h2>
         <p>
@@ -93,16 +91,27 @@ import { shortTestimonials, longTestimonials } from "../data/testimonials";
           further refined his talent for reading crowds and curating the perfect playlist to match
           any occasion.
         </p>
-        <p class="pill-tag">Emcee for Average White Band, Isley Brothers, Tower of Power, Bar-Kays</p>
+        <p class="bio-credit">
+          Emcee for Average White Band, Isley Brothers, Tower of Power, Bar-Kays
+        </p>
+        <ul class="band-row">
+          {
+            bands.map((band) => (
+              <li>
+                <img src={band.src} alt={band.alt} loading="lazy" />
+              </li>
+            ))
+          }
+        </ul>
       </div>
     </div>
   </section>
 
   <section class="fix-section">
-    <div class="container fix-inner">
+    <div class="container fix-grid">
+      <h2 class="fix-title reveal">Bring Your Event to Life with Heavy DJs!</h2>
       <div class="fix-copy reveal">
-        <p class="eyebrow">Bring your event to life with Heavy DJs!</p>
-        <h2>Here's how we fix it:</h2>
+        <h3>Here's how we fix it:</h3>
         <ul class="fix-list">
           <li>We read the crowd and play the perfect mix to keep everyone dancing.</li>
           <li>Our professional emcees ensure smooth transitions and keep your event on track.</li>
@@ -112,30 +121,24 @@ import { shortTestimonials, longTestimonials } from "../data/testimonials";
           </li>
         </ul>
       </div>
+    </div>
+  </section>
 
-      <div class="fix-values">
-        <div class="card reveal">
-          <h3>Personalized Experience</h3>
-          <p>
-            With over 25 years in the industry, we tailor every performance to match your event's
-            vibe and your crowd's energy.
-          </p>
-        </div>
-        <div class="card reveal">
-          <h3>Complete Entertainment</h3>
-          <p>
-            We handle both the music and the flow of your event with expert emceeing, making sure
-            everything runs smoothly.
-          </p>
-        </div>
-        <div class="card reveal">
-          <h3>Crowd Reading Expertise</h3>
-          <p>
-            From weddings to corporate events, we know how to read a room and play the right music
-            to keep everyone engaged and on the dance floor.
-          </p>
-        </div>
-      </div>
+  <section class="values-section">
+    <div class="container values-grid">
+      {
+        valueProps.map((v) => (
+          <div class="value-item reveal">
+            <svg class="value-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+              <path d="M9 18V5l12-2v13" stroke-linecap="round" stroke-linejoin="round" />
+              <circle cx="6" cy="18" r="3" />
+              <circle cx="18" cy="16" r="3" />
+            </svg>
+            <h3>{v.title}</h3>
+            <p>{v.body}</p>
+          </div>
+        ))
+      }
     </div>
   </section>
 
@@ -144,14 +147,7 @@ import { shortTestimonials, longTestimonials } from "../data/testimonials";
 
   <section class="testimonial-strip testimonial-strip--long">
     <div class="container testimonial-grid">
-      {longTestimonials.map((t) => <TestimonialCard testimonial={t} />)}
-    </div>
-  </section>
-
-  <section class="final-cta">
-    <div class="container final-cta-inner reveal">
-      <h2>Ready to make your event unforgettable?</h2>
-      <a href="/contact/" class="btn btn-primary">Request a Quote</a>
+      {longTestimonials.map((t) => <TestimonialCard testimonial={t} variant="blue" />)}
     </div>
   </section>
 </BaseLayout>
@@ -163,111 +159,100 @@ import { shortTestimonials, longTestimonials } from "../data/testimonials";
     gap: 1.5rem;
   }
 
-  .split-inner,
-  .emcee-inner,
-  .bio-inner {
+  /* Did your last event fall flat */
+  .problem-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    align-items: start;
+  }
+
+  .problem-title {
+    font-size: clamp(2rem, 5vw, 3.2rem);
+  }
+
+  .problem-copy h3 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .problem-list,
+  .fix-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.7rem;
+  }
+
+  .problem-list li,
+  .fix-list li {
+    position: relative;
+    padding-left: 1.4rem;
+  }
+
+  .problem-list li::before,
+  .fix-list li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0.62em;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: currentColor;
+  }
+
+  /* Black video section */
+  .video-section {
+    background: #000;
+    color: #fff;
+    text-align: center;
+  }
+
+  .video-title {
+    font-size: clamp(2rem, 5vw, 3.2rem);
+    margin-bottom: 2rem;
+  }
+
+  .video-frame {
+    position: relative;
+    width: 100%;
+    max-width: 900px;
+    aspect-ratio: 16 / 9;
+    margin-inline: auto;
+    border-radius: var(--radius-md);
+    overflow: hidden;
+  }
+
+  .video-frame iframe {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+  }
+
+  /* JJ bio */
+  .bio-grid {
+    display: grid;
+    grid-template-columns: 0.85fr 1fr;
     gap: 3rem;
     align-items: center;
   }
 
-  .emcee-inner {
-    direction: rtl;
-  }
-
-  .emcee-inner > * {
-    direction: ltr;
-  }
-
-  .split-item {
-    margin-bottom: 1.75rem;
-  }
-
-  .split-item h2 {
-    font-size: 1.7rem;
-    margin-bottom: 0.4rem;
-  }
-
-  .split-item p,
-  .emcee-copy p {
-    color: var(--ink-soft);
-  }
-
-  .emcee-copy h2 {
-    font-size: clamp(1.8rem, 3.5vw, 2.4rem);
-    margin-bottom: 0.75rem;
-  }
-
-  .trust-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-    gap: 1.25rem;
-  }
-
-  .trust-item h3 {
-    font-size: 1.15rem;
-    margin-bottom: 0.5rem;
-  }
-
-  .trust-item p {
-    color: var(--ink-soft);
-  }
-
-  .problem-section {
-    background: var(--ink);
-    color: var(--cream);
-    text-align: center;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .problem-inner {
-    max-width: 640px;
-    margin-inline: auto;
-    position: relative;
-  }
-
-  .problem-inner .eyebrow {
-    color: var(--yellow);
-  }
-
-  .problem-inner h2 {
-    font-size: clamp(1.8rem, 4vw, 2.6rem);
-    margin: 0.5rem 0 1.75rem;
-  }
-
-  .problem-list {
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
-  }
-
-  .problem-list li {
-    background: rgb(250 241 228 / 0.08);
-    border-radius: var(--radius-sm);
-    padding: 0.9rem 1.2rem;
-  }
-
-  .deco {
-    position: absolute;
-    top: -10px;
-    right: 10%;
-  }
-
   .bio-photo {
-    max-width: 340px;
+    border-radius: 50%;
+    max-width: 360px;
   }
 
   .jj-banner {
-    height: 32px;
+    height: 44px;
     width: auto;
-    margin: 0.25rem 0 0.75rem;
+    margin-bottom: 0.75rem;
   }
 
   .bio-copy h2 {
-    font-size: clamp(1.8rem, 3.5vw, 2.4rem);
-    margin: 0.4rem 0 1rem;
+    font-size: 1.5rem;
+    margin-bottom: 0.75rem;
   }
 
   .bio-copy p {
@@ -275,72 +260,87 @@ import { shortTestimonials, longTestimonials } from "../data/testimonials";
     margin-bottom: 1rem;
   }
 
-  .fix-inner {
+  .bio-credit {
+    font-weight: 700;
+    color: var(--ink) !important;
+  }
+
+  .band-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+
+  .band-row img {
+    width: 76px;
+    height: 76px;
+    object-fit: cover;
+    border-radius: var(--radius-sm);
+  }
+
+  /* Pink fix section */
+  .fix-section {
+    background: var(--pink);
+    color: #fff;
+  }
+
+  .fix-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 3rem;
+    align-items: start;
   }
 
-  .fix-copy h2 {
-    font-size: clamp(1.8rem, 3.5vw, 2.4rem);
-    margin: 0.4rem 0 1.25rem;
+  .fix-title {
+    font-size: clamp(2.1rem, 5vw, 3.4rem);
   }
 
-  .fix-list {
+  .fix-copy h3 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+  }
+
+  /* Value props */
+  .values-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2.5rem;
+    text-align: center;
+  }
+
+  .value-item {
     display: flex;
     flex-direction: column;
-    gap: 0.9rem;
+    align-items: center;
+    gap: 0.6rem;
   }
 
-  .fix-list li {
-    padding-left: 1.6rem;
-    position: relative;
-    color: var(--ink-soft);
+  .value-icon {
+    width: 34px;
+    height: 34px;
+    color: var(--ink);
   }
 
-  .fix-list li::before {
-    content: "✓";
-    position: absolute;
-    left: 0;
-    color: var(--pink);
-    font-weight: 700;
+  .value-item h3 {
+    font-size: 1.2rem;
   }
 
-  .fix-values {
-    display: flex;
-    flex-direction: column;
-    gap: 1.1rem;
-  }
-
-  .fix-values h3 {
-    font-size: 1.1rem;
-    margin-bottom: 0.4rem;
-  }
-
-  .fix-values p {
+  .value-item p {
     color: var(--ink-soft);
     font-size: 0.95rem;
   }
 
-  .final-cta {
-    text-align: center;
-  }
-
-  .final-cta-inner h2 {
-    font-size: clamp(1.9rem, 4vw, 2.6rem);
-    margin-bottom: 1.5rem;
-  }
-
   @media (max-width: 860px) {
-    .split-inner,
-    .emcee-inner,
-    .bio-inner,
-    .fix-inner {
+    .problem-grid,
+    .fix-grid,
+    .bio-grid {
       grid-template-columns: 1fr;
+      gap: 1.75rem;
     }
 
-    .emcee-inner {
-      direction: ltr;
+    .values-grid {
+      grid-template-columns: 1fr;
+      gap: 2rem;
     }
 
     .bio-photo {
