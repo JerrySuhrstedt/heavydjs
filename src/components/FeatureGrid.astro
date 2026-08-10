@@ -11,12 +11,11 @@ import { weFeature } from "../data/features";
         weFeature.map((feature) => (
           <li class="feature-item reveal">
             <svg class="feature-check" viewBox="0 0 24 24" aria-hidden="true">
-              <circle cx="12" cy="12" r="11" fill="var(--ink)" />
               <path
-                d="M7 12.5l3.2 3.2L17 9"
+                d="M4 12.8l5.2 5.2L20 6.5"
                 fill="none"
-                stroke="#fff"
-                stroke-width="2.2"
+                stroke="var(--pink)"
+                stroke-width="2.6"
                 stroke-linecap="round"
                 stroke-linejoin="round"
               />
@@ -42,9 +41,12 @@ import { weFeature } from "../data/features";
     margin-bottom: 2.5rem;
   }
 
+  /* original fills column-first: items 1-5 left, 6-10 right */
   .feature-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(5, auto);
+    grid-auto-flow: column;
     gap: 1.5rem 3rem;
   }
 
@@ -55,25 +57,31 @@ import { weFeature } from "../data/features";
   }
 
   .feature-check {
-    width: 24px;
-    height: 24px;
+    width: 25px;
+    height: 25px;
     flex-shrink: 0;
-    margin-top: 0.15rem;
+    margin-top: 0.6rem;
   }
 
+  /* matches the original: 28.8px / 43.2px heading, 16px / 24px body */
   .feature-item h3 {
-    font-size: 1.05rem;
-    margin-bottom: 0.2rem;
+    font-size: 1.8rem;
+    font-weight: 400;
+    line-height: 1.5;
+    margin-bottom: 0.1rem;
   }
 
   .feature-item p {
-    color: rgb(0 0 0 / 0.7);
-    font-size: 0.92rem;
+    color: var(--ink);
+    font-size: 1rem;
+    line-height: 1.5;
   }
 
   @media (max-width: 760px) {
     .feature-grid {
       grid-template-columns: 1fr;
+      grid-template-rows: none;
+      grid-auto-flow: row;
       gap: 1.25rem;
     }
   }

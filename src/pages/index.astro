@@ -77,7 +77,7 @@ const valueProps = [
       <Photo
         src="/images/home-dj-vintage.webp"
         alt="JJ Nite behind the decks"
-        ratio="1 / 1"
+        ratio="2 / 3"
         class="bio-photo reveal"
       />
       <div class="bio-copy reveal">
@@ -108,6 +108,8 @@ const valueProps = [
   </section>
 
   <section class="fix-section">
+    <div class="fix-video" aria-hidden="true" data-video-src="https://www.youtube-nocookie.com/embed/dGNIorj5tSQ?autoplay=1&mute=1&loop=1&playlist=dGNIorj5tSQ&controls=0&showinfo=0&modestbranding=1&playsinline=1">
+    </div>
     <div class="container fix-grid">
       <h2 class="fix-title reveal">Bring Your Event to Life with Heavy DJs!</h2>
       <div class="fix-copy reveal">
@@ -150,13 +152,45 @@ const valueProps = [
       {longTestimonials.map((t) => <TestimonialCard testimonial={t} variant="blue" />)}
     </div>
   </section>
+
+  <script>
+    // Only mount the background video once the section is near the viewport, and
+    // skip it entirely for users who prefer reduced motion.
+    const holder = document.querySelector<HTMLElement>(".fix-video");
+    const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    if (holder && !prefersReduced) {
+      const io = new IntersectionObserver(
+        (entries) => {
+          for (const entry of entries) {
+            if (!entry.isIntersecting) continue;
+            const iframe = document.createElement("iframe");
+            iframe.src = holder.dataset.videoSrc ?? "";
+            iframe.tabIndex = -1;
+            iframe.setAttribute("allow", "autoplay; encrypted-media");
+            iframe.setAttribute("title", "");
+            holder.appendChild(iframe);
+            io.disconnect();
+          }
+        },
+        { rootMargin: "200px" }
+      );
+      io.observe(holder);
+    }
+  </script>
 </BaseLayout>
 
 <style>
   .testimonial-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    grid-template-columns: repeat(3, 1fr);
     gap: 1.5rem;
+  }
+
+  @media (max-width: 800px) {
+    .testimonial-grid {
+      grid-template-columns: 1fr;
+    }
   }
 
   /* Did your last event fall flat */
@@ -167,20 +201,23 @@ const valueProps = [
     align-items: start;
   }
 
-  .problem-title {
-    font-size: clamp(2rem, 5vw, 3.2rem);
-  }
-
+  /* original: 44.8px / 500 / 44.8px */
   .problem-copy h3 {
-    font-size: 1.5rem;
+    font-size: 2.8rem;
+    font-weight: 500;
+    line-height: 1;
     margin-bottom: 1rem;
   }
 
+  /* original list items: 19.2px / 600 / 28.8px */
   .problem-list,
   .fix-list {
     display: flex;
     flex-direction: column;
     gap: 0.7rem;
+    font-size: 1.2rem;
+    font-weight: 600;
+    line-height: 1.5;
   }
 
   .problem-list li,
@@ -209,14 +246,13 @@ const valueProps = [
   }
 
   .video-title {
-    font-size: clamp(2rem, 5vw, 3.2rem);
     margin-bottom: 2rem;
   }
 
   .video-frame {
     position: relative;
     width: 100%;
-    max-width: 900px;
+    max-width: 1098px;
     aspect-ratio: 16 / 9;
     margin-inline: auto;
     border-radius: var(--radius-md);
@@ -240,8 +276,7 @@ const valueProps = [
   }
 
   .bio-photo {
-    border-radius: 50%;
-    max-width: 360px;
+    max-width: 440px;
   }
 
   .jj-banner {
@@ -250,53 +285,78 @@ const valueProps = [
     margin-bottom: 0.75rem;
   }
 
+  /* original renders this in Public Sans 19.2/600, not the display face */
   .bio-copy h2 {
-    font-size: 1.5rem;
+    font-family: var(--font-body);
+    font-size: 1.2rem;
+    font-weight: 600;
+    line-height: 1.5;
     margin-bottom: 0.75rem;
   }
 
   .bio-copy p {
-    color: var(--ink-soft);
+    color: var(--ink);
     margin-bottom: 1rem;
   }
 
   .bio-credit {
-    font-weight: 700;
-    color: var(--ink) !important;
+    font-weight: 400;
   }
 
   .band-row {
     display: flex;
     flex-wrap: wrap;
-    gap: 0.75rem;
+    gap: 19px;
   }
 
   .band-row img {
-    width: 76px;
-    height: 76px;
+    width: 133px;
+    height: 133px;
     object-fit: cover;
-    border-radius: var(--radius-sm);
   }
 
-  /* Pink fix section */
+  /* Fix section — original uses a muted YouTube video background behind white text */
   .fix-section {
+    position: relative;
     background: var(--pink);
     color: #fff;
+    overflow: hidden;
+    isolation: isolate;
+  }
+
+  .fix-video {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    overflow: hidden;
+  }
+
+  .fix-video iframe {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 100vw;
+    height: 56.25vw;
+    min-height: 100%;
+    min-width: 177.78vh;
+    transform: translate(-50%, -50%);
+    border: 0;
   }
 
   .fix-grid {
+    position: relative;
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 3rem;
     align-items: start;
   }
 
-  .fix-title {
-    font-size: clamp(2.1rem, 5vw, 3.4rem);
-  }
-
+  /* original: 38.4px / 400 / 48px */
   .fix-copy h3 {
-    font-size: 1.5rem;
+    font-size: 2.4rem;
+    font-weight: 400;
+    line-height: 1.25;
     margin-bottom: 1rem;
   }
 
@@ -321,13 +381,17 @@ const valueProps = [
     color: var(--ink);
   }
 
+  /* original value-prop headings: 38.4px / 400 / 48px */
   .value-item h3 {
-    font-size: 1.2rem;
+    font-size: 2.4rem;
+    font-weight: 400;
+    line-height: 1.25;
   }
 
   .value-item p {
-    color: var(--ink-soft);
-    font-size: 0.95rem;
+    color: var(--ink);
+    font-size: 1rem;
+    line-height: 1.5;
   }
 
   @media (max-width: 860px) {

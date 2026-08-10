@@ -34,7 +34,7 @@ export const weFeature: Feature[] = [
   },
   {
     title: "Experienced DJ",
-    description: "Over 25 years in the industry means you're getting the best in the business.",
+    description: "Over 20 years in the industry means you're getting the best in the business.",
   },
   {
     title: "Flexible Event Coverage",

@@ -100,25 +100,27 @@ import Photo from "./Photo.astro";
 
   .bento-orange {
     background: var(--orange);
-    color: #fff;
+    color: var(--ink);
   }
 
+  .bento-copy {
+    text-align: center;
+  }
+
+  /* matches the original: 28.8px / 32px heading, 16px / 24px body */
   .bento-copy h2 {
-    font-size: 1.45rem;
+    font-size: 1.8rem;
+    line-height: 1.11;
     margin-bottom: 0.5rem;
   }
 
   .bento-copy p {
-    font-size: 0.95rem;
+    font-size: 1rem;
     line-height: 1.5;
   }
 
   .bento-solid .bento-copy p {
-    color: rgb(0 0 0 / 0.72);
-  }
-
-  .bento-orange .bento-copy p {
-    color: rgb(255 255 255 / 0.9);
+    color: var(--ink);
   }
 
   .bento-inset {
@@ -141,7 +143,27 @@ import Photo from "./Photo.astro";
   }
 
   .bento-photo .bento-copy p {
-    color: rgb(255 255 255 / 0.88);
+    color: #fff;
+  }
+
+  /* the original raises the middle card of each row by 50px */
+  .bento-grid > :nth-child(2),
+  .bento-grid > :nth-child(5) {
+    transform: translateY(-50px);
+  }
+
+  .bento-grid > :nth-child(2):hover,
+  .bento-grid > :nth-child(5):hover {
+    transform: translateY(-54px);
+  }
+
+  @media (max-width: 900px) {
+    .bento-grid > :nth-child(2),
+    .bento-grid > :nth-child(5),
+    .bento-grid > :nth-child(2):hover,
+    .bento-grid > :nth-child(5):hover {
+      transform: none;
+    }
   }
 
   @media (max-width: 900px) {

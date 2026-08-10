@@ -7,54 +7,55 @@ interface Props {
 }
 
 const { testimonial, variant = "default" } = Astro.props;
+const isBlue = variant === "blue";
 ---
 
-<figure class={`testimonial card reveal ${variant === "blue" ? "testimonial-blue" : ""}`}>
+<figure class={`testimonial card reveal ${isBlue ? "testimonial-blue" : ""}`}>
+  {
+    /* the original shows stars only on the top row, above the quote */
+    !isBlue && (
+      <div class="stars" aria-hidden="true">
+        {"★".repeat(testimonial.rating ?? 5)}
+      </div>
+    )
+  }
   <blockquote>&ldquo;{testimonial.quote}&rdquo;</blockquote>
-  <div class="stars" aria-hidden="true">{"★".repeat(testimonial.rating ?? 5)}</div>
   <figcaption>
-    <span class="name">{testimonial.name}</span>
-    {testimonial.location && <span class="location">{testimonial.location}</span>}
+    {testimonial.location ? `${testimonial.name} | ${testimonial.location}` : testimonial.name}
   </figcaption>
 </figure>
 
 <style>
   .testimonial {
+    /* figure carries a default 1em 40px margin — clear it */
+    margin: 0;
     display: flex;
     flex-direction: column;
     gap: 1rem;
+    text-align: center;
   }
 
   .stars {
-    color: var(--orange);
-    font-size: 1rem;
-    letter-spacing: 0.15em;
+    color: var(--yellow);
+    font-size: 1.75rem;
+    letter-spacing: 0.1em;
   }
 
   blockquote {
     margin: 0;
-    font-size: 1.02rem;
-    color: var(--ink-soft);
+    font-size: 1rem;
+    line-height: 1.5;
+    color: var(--ink);
   }
 
+  /* matches the original attribution: 19.2px / 600 / 28.8px, single piped line */
   figcaption {
-    display: flex;
-    flex-direction: column;
-    font-weight: 700;
-  }
-
-  .location {
-    font-weight: 500;
-    color: var(--ink-soft);
-    font-size: 0.9rem;
+    font-size: 1.2rem;
+    font-weight: 600;
+    line-height: 1.5;
   }
 
   .testimonial-blue {
     background: var(--blue);
-  }
-
-  .testimonial-blue blockquote,
-  .testimonial-blue .location {
-    color: rgb(0 0 0 / 0.75);
   }
 </style>

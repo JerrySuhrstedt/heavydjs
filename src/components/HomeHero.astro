@@ -22,10 +22,9 @@ const behindSparkles = [
   <div class="container hero-inner">
     {sparkles.map((s) => <Sparkle color={s.color} size={s.size} class="deco" style={s.style} />)}
 
-    <p class="eyebrow">Phoenix Area Wedding &amp; Event DJs</p>
     <div class="headline-wrap">
       {behindSparkles.map((s) => <Sparkle color={s.color} size={s.size} class="deco deco-behind" style={s.style} />)}
-      <h1>Where music meets magic&hellip; and memories are made</h1>
+      <h1>Where music<br />meets magic...<br />and memories<br />are made</h1>
     </div>
     <p class="hero-sub">We turn your wedding, corporate event, or private party into a celebration.</p>
     <a href="/dj-services/" class="btn btn-primary hero-cta">See DJ Packages</a>
@@ -55,11 +54,13 @@ const behindSparkles = [
     width: 100%;
   }
 
+  /* matches the original: 96px / 88px line-height, weight 600 */
   h1 {
     position: relative;
     z-index: 2;
-    font-size: clamp(2.6rem, 7vw, 5rem);
+    font-size: clamp(2.8rem, 7.5vw, 6rem);
     font-weight: 600;
+    line-height: 0.917;
   }
 
   /* matches the original site's subhead: Bricolage Grotesque, 44.8px, weight 500 */
@@ -74,7 +75,6 @@ const behindSparkles = [
 
   .hero-cta {
     margin-top: 1rem;
-    font-size: 1.05rem;
   }
 </style>
 

@@ -1,7 +1,10 @@
 ---
-import { arizonaLocalLinks } from "../data/cities";
+import { arizonaLocalLinks, mobileDjLinks, weddingDjLinks, nearMeLinks } from "../data/cities";
 
 const year = new Date().getFullYear();
+
+// the original footer carries a full band of SEO city links, one row per service
+const cityRows = [arizonaLocalLinks, mobileDjLinks, weddingDjLinks, nearMeLinks];
 ---
 
 <footer class="site-footer">
@@ -29,6 +32,22 @@ const year = new Date().getFullYear();
       {arizonaLocalLinks.map((link) => <a href={link.href}>{link.label}</a>)}
     </nav>
   </div>
+
+  <nav class="city-band" aria-label="Service areas">
+    <div class="container">
+      {
+        cityRows.map((row) => (
+          <ul class="city-row">
+            {row.map((link) => (
+              <li>
+                <a href={link.href}>{link.label}</a>
+              </li>
+            ))}
+          </ul>
+        ))
+      }
+    </div>
+  </nav>
 
   <div class="container footer-bottom">
     <p>©{year} All Rights Reserved | SumoLab LLC</p>
@@ -86,12 +105,37 @@ const year = new Date().getFullYear();
     margin-bottom: 0.25rem;
   }
 
-  .footer-bottom {
+  .city-band {
     margin-top: 3rem;
+    padding-top: 1.75rem;
+    border-top: 1px solid rgb(250 241 228 / 0.15);
+  }
+
+  .city-row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.35rem 1.25rem;
+    margin-bottom: 0.6rem;
+    font-size: 0.8rem;
+  }
+
+  .city-row a {
+    color: rgb(250 241 228 / 0.75);
+    text-decoration: none;
+  }
+
+  .city-row a:hover {
+    color: var(--pink);
+  }
+
+  .footer-bottom {
+    margin-top: 1.75rem;
     padding-top: 1.5rem;
     border-top: 1px solid rgb(250 241 228 / 0.15);
-    font-size: 0.85rem;
+    font-size: 0.8rem;
     color: rgb(250 241 228 / 0.6);
+    text-align: center;
   }
 
   @media (max-width: 860px) {

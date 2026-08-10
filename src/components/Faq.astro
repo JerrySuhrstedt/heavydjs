@@ -6,20 +6,22 @@ import { faqItems } from "../data/faq";
   <div class="container">
     <h2>FAQs</h2>
 
-    <div class="faq-list">
-      {
-        faqItems.map((item, i) => (
-          <details class="faq-item reveal" open={i === 0}>
-            <summary>
-              {item.question}
-              <span class="faq-icon" aria-hidden="true">
-                ›
-              </span>
-            </summary>
-            <p>{item.answer}</p>
-          </details>
-        ))
-      }
+    <div class="faq-card">
+      <div class="faq-list">
+        {
+          faqItems.map((item, i) => (
+            <details class="faq-item reveal" open={i === 0}>
+              <summary>
+                {item.question}
+                <span class="faq-icon" aria-hidden="true">
+                  +
+                </span>
+              </summary>
+              <p>{item.answer}</p>
+            </details>
+          ))
+        }
+      </div>
     </div>
   </div>
 </section>
@@ -30,10 +32,17 @@ import { faqItems } from "../data/faq";
     margin-bottom: 2rem;
   }
 
+  /* original wraps the accordion in a 15px-radius, 50px-padded card */
+  .faq-card {
+    background: var(--cream-soft);
+    border-radius: 15px;
+    padding: clamp(1.5rem, 4vw, 3.125rem);
+  }
+
   .faq-list {
     display: flex;
     flex-direction: column;
-    gap: 0.6rem;
+    gap: 0.3rem;
   }
 
   .faq-item summary {
@@ -42,13 +51,12 @@ import { faqItems } from "../data/faq";
     justify-content: space-between;
     gap: 1rem;
     cursor: pointer;
-    font-weight: 700;
-    font-size: 0.98rem;
+    font-weight: 600;
+    font-size: 1.2rem;
     list-style: none;
     background: var(--yellow);
     color: var(--ink);
-    padding: 0.95rem 1.3rem;
-    border-radius: var(--radius-sm);
+    padding: 0.94rem;
   }
 
   .faq-item summary::-webkit-details-marker {
@@ -56,17 +64,18 @@ import { faqItems } from "../data/faq";
   }
 
   .faq-icon {
-    font-size: 1.4rem;
+    font-size: 1.5rem;
     line-height: 1;
     transition: transform 0.2s ease;
   }
 
   .faq-item[open] .faq-icon {
-    transform: rotate(90deg);
+    transform: rotate(45deg);
   }
 
   .faq-item p {
-    padding: 1rem 1.3rem 0.5rem;
-    color: var(--ink-soft);
+    padding: 1rem 0.94rem;
+    color: var(--ink);
+    line-height: 1.7;
   }
 </style>
