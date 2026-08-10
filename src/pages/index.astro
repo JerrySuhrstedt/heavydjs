@@ -193,10 +193,11 @@ const valueProps = [
     }
   }
 
-  /* Did your last event fall flat */
+  /* Did your last event fall flat — original column is ~509px, which is what
+     keeps the heading stacked over three lines */
   .problem-grid {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: minmax(0, 509px) 1fr;
     gap: 3rem;
     align-items: start;
   }
@@ -285,13 +286,14 @@ const valueProps = [
     margin-bottom: 0.75rem;
   }
 
-  /* original renders this in Public Sans 19.2/600, not the display face */
+  /* original renders this in Public Sans 19.2/600 with an oversized 80px
+     line-height, which is what gives the bio paragraph its air above */
   .bio-copy h2 {
     font-family: var(--font-body);
     font-size: 1.2rem;
     font-weight: 600;
-    line-height: 1.5;
-    margin-bottom: 0.75rem;
+    line-height: 80px;
+    margin-bottom: 0;
   }
 
   .bio-copy p {
@@ -332,7 +334,8 @@ const valueProps = [
     overflow: hidden;
   }
 
-  .fix-video iframe {
+  /* :global — the iframe is created in JS, so it never carries Astro's scope attribute */
+  .fix-video :global(iframe) {
     position: absolute;
     top: 50%;
     left: 50%;

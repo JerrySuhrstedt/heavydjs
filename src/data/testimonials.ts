@@ -1,5 +1,7 @@
 export interface Testimonial {
   quote: string;
+  /** Rendered as its own paragraph after the quote, as on the original site. */
+  pullQuote?: string;
   name: string;
   location?: string;
   rating?: number;
@@ -32,19 +34,22 @@ export const shortTestimonials: Testimonial[] = [
 export const longTestimonials: Testimonial[] = [
   {
     quote:
-      "JJ is an awesome DJ if you want to have a great time. Wedding receptions are so much more fun when you have a good DJ that knows how to move the crowd. JJ is really knows music. He's professional and does a great job. Highly recommended!! Highly recommend him for any event you want to have fun!!",
+      "JJ is an awesome DJ if you want to have a great time. Wedding receptions are so much more fun when you have a good DJ that knows how to move the crowd. JJ is really knows music. He's professional and does a great job. Highly recommended!!",
+    pullQuote: "Highly recommend him for any event you want to have fun!!",
     name: "Teri Foss",
     rating: 5,
   },
   {
     quote:
-      "My wife and I hired JJ to DJ our daughter's wedding reception. Wow! He's next level. Not only did he play all of my daughter's requested music, but he really knows how to read the crowd and play the right song, at the right time. Also used his emcee skills to help coordinate the schedule and keep things going. Highly recommend him for any event you want to have fun!!",
+      "My wife and I hired JJ to DJ our daughter's wedding reception. Wow! He's next level. Not only did he play all of my daughter's requested music, but he really knows how to read the crowd and play the right song, at the right time. Also used his emcee skills to help coordinate the schedule and keep things going.",
+    pullQuote: "Highly recommend him for any event you want to have fun!!",
     name: "Gene Thomas",
     rating: 5,
   },
   {
     quote:
-      "JJ totally rocks at a party! From soul, funk, disco, and hop-hop all the way to Zeppelin… how knows how to play the right music to keep guests movin' and grooving. If you hire JJ, you won't go wrong. Highly recommend him for any event you want to have fun!!",
+      "JJ totally rocks at a party! From soul, funk, disco, and hop-hop all the way to Zeppelin… how knows how to play the right music to keep guests movin' and grooving. If you hire JJ, you won't go wrong.",
+    pullQuote: "Highly recommend him for any event you want to have fun!!",
     name: "Petar Cale",
     rating: 5,
   },

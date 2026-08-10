@@ -19,7 +19,8 @@ const isBlue = variant === "blue";
       </div>
     )
   }
-  <blockquote>&ldquo;{testimonial.quote}&rdquo;</blockquote>
+  <blockquote>&ldquo;{testimonial.quote}</blockquote>
+  {testimonial.pullQuote && <p class="pull-quote">{testimonial.pullQuote}&rdquo;</p>}
   <figcaption>
     {testimonial.location ? `${testimonial.name} | ${testimonial.location}` : testimonial.name}
   </figcaption>
@@ -55,7 +56,14 @@ const isBlue = variant === "blue";
     line-height: 1.5;
   }
 
+  .pull-quote {
+    font-size: 1rem;
+    line-height: 1.5;
+  }
+
+  /* the original left-aligns the bottom (blue) cards; only the top strip is centered */
   .testimonial-blue {
     background: var(--blue);
+    text-align: start;
   }
 </style>

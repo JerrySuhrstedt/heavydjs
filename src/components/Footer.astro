@@ -1,6 +1,7 @@
 ---
 import { arizonaLocalLinks, mobileDjLinks, weddingDjLinks, nearMeLinks } from "../data/cities";
 
+
 const year = new Date().getFullYear();
 
 // the original footer carries a full band of SEO city links, one row per service
@@ -25,11 +26,6 @@ const cityRows = [arizonaLocalLinks, mobileDjLinks, weddingDjLinks, nearMeLinks]
       <a href="/about/">About</a>
       <a href="/store/">Heavy DJ Apparel</a>
       <a href="/contact/">Contact</a>
-    </nav>
-
-    <nav class="footer-local" aria-label="Arizona local pages">
-      <p class="footer-local-title">We're Arizona Local</p>
-      {arizonaLocalLinks.map((link) => <a href={link.href}>{link.label}</a>)}
     </nav>
   </div>
 
@@ -63,7 +59,7 @@ const cityRows = [arizonaLocalLinks, mobileDjLinks, weddingDjLinks, nearMeLinks]
 
   .footer-top {
     display: grid;
-    grid-template-columns: 1.3fr 1fr 1fr 1fr;
+    grid-template-columns: 1.4fr 1fr 1fr;
     gap: 2.5rem;
   }
 
@@ -78,8 +74,7 @@ const cityRows = [arizonaLocalLinks, mobileDjLinks, weddingDjLinks, nearMeLinks]
   }
 
   .footer-contact,
-  .footer-nav,
-  .footer-local {
+  .footer-nav {
     display: flex;
     flex-direction: column;
     gap: 0.65rem;
@@ -87,22 +82,14 @@ const cityRows = [arizonaLocalLinks, mobileDjLinks, weddingDjLinks, nearMeLinks]
   }
 
   .footer-contact a,
-  .footer-nav a,
-  .footer-local a {
+  .footer-nav a {
     color: rgb(250 241 228 / 0.85);
     text-decoration: none;
   }
 
   .footer-contact a:hover,
-  .footer-nav a:hover,
-  .footer-local a:hover {
+  .footer-nav a:hover {
     color: var(--pink);
-  }
-
-  .footer-local-title {
-    font-weight: 700;
-    color: var(--cream);
-    margin-bottom: 0.25rem;
   }
 
   .city-band {
@@ -121,7 +108,7 @@ const cityRows = [arizonaLocalLinks, mobileDjLinks, weddingDjLinks, nearMeLinks]
   }
 
   .city-row a {
-    color: rgb(250 241 228 / 0.75);
+    color: #fff;
     text-decoration: none;
   }
 
