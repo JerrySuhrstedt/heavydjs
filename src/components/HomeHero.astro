@@ -1,16 +1,32 @@
 ---
 import Sparkle from "./Sparkle.astro";
+
+const sparkles = [
+  { color: "var(--pink)", size: 38, style: "top: -6%; left: 3%;" },
+  { color: "var(--blue)", size: 16, style: "top: 12%; left: 10%;" },
+  { color: "var(--orange)", size: 34, style: "top: -2%; right: 5%;" },
+  { color: "var(--pink)", size: 14, style: "top: 11%; right: 11%;" },
+  { color: "var(--pink)", size: 15, style: "bottom: 10%; left: 12%;" },
+  { color: "var(--orange)", size: 30, style: "bottom: 4%; left: 20%;" },
+  { color: "var(--blue)", size: 28, style: "bottom: 12%; right: 20%;" },
+  { color: "var(--orange)", size: 16, style: "bottom: 6%; right: 12%;" },
+];
+
+const behindSparkles = [
+  { color: "var(--pink)", size: 30, style: "top: 38%; left: 47%;" },
+  { color: "var(--orange)", size: 20, style: "top: 34%; left: 43%;" },
+];
 ---
 
 <section class="hero">
   <div class="container hero-inner">
-    <Sparkle color="var(--pink)" size={34} class="deco deco-1" />
-    <Sparkle color="var(--blue)" size={22} class="deco deco-2" />
-    <Sparkle color="var(--orange)" size={26} class="deco deco-3" />
-    <Sparkle color="var(--yellow)" size={18} class="deco deco-4" />
+    {sparkles.map((s) => <Sparkle color={s.color} size={s.size} class="deco" style={s.style} />)}
 
     <p class="eyebrow">Phoenix Area Wedding &amp; Event DJs</p>
-    <h1>Where music meets magic&hellip; and memories are made</h1>
+    <div class="headline-wrap">
+      {behindSparkles.map((s) => <Sparkle color={s.color} size={s.size} class="deco deco-behind" style={s.style} />)}
+      <h1>Where music meets magic&hellip; and memories are made</h1>
+    </div>
     <p class="hero-sub">We turn your wedding, corporate event, or private party into a celebration.</p>
     <a href="/dj-services/" class="btn btn-primary hero-cta">See DJ Packages</a>
   </div>
@@ -34,7 +50,14 @@ import Sparkle from "./Sparkle.astro";
     gap: 1.25rem;
   }
 
+  .headline-wrap {
+    position: relative;
+    width: 100%;
+  }
+
   h1 {
+    position: relative;
+    z-index: 2;
     font-size: clamp(2.6rem, 7vw, 5rem);
     font-weight: 600;
   }
@@ -49,34 +72,21 @@ import Sparkle from "./Sparkle.astro";
     margin-top: 1rem;
     font-size: 1.05rem;
   }
+</style>
 
-  .deco {
+<style is:global>
+  .hero .deco {
     position: absolute;
     pointer-events: none;
+    z-index: 1;
   }
 
-  .deco-1 {
-    top: -10px;
-    left: 4%;
-  }
-
-  .deco-2 {
-    top: 20%;
-    left: 12%;
-  }
-
-  .deco-3 {
-    top: 4%;
-    right: 6%;
-  }
-
-  .deco-4 {
-    bottom: 6%;
-    right: 16%;
+  .hero .deco-behind {
+    z-index: 0;
   }
 
   @media (max-width: 640px) {
-    .deco {
+    .hero .deco {
       display: none;
     }
   }
