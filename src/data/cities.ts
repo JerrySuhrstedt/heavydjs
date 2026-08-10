@@ -58,13 +58,14 @@ export const cityPages: CityPage[] = [
     serviceLabel: "Wedding DJ",
     datePublished,
   })),
-  {
-    variant: "near-me",
-    city: "Chandler",
-    slug: "mobile-dj-near-me-chandler-az",
-    serviceLabel: "DJ Near Me",
-    datePublished: "2025-03-18",
-  },
+  // Only Chandler exists on the original site; the other five are net-new.
+  ...["Chandler", "Phoenix", "Scottsdale", "Tempe", "Gilbert", "Mesa"].map((city) => ({
+    variant: "near-me" as const,
+    city,
+    slug: `mobile-dj-near-me-${city.toLowerCase()}-az`,
+    serviceLabel: "Mobile DJ Near Me",
+    datePublished: city === "Chandler" ? "2025-03-18" : "2026-08-10",
+  })),
 ];
 
 // Nav lists shown in the "We're Arizona Local" footer/section, matching the source site.
@@ -95,4 +96,11 @@ export const weddingDjLinks = [
   { label: "Wedding DJ Mesa AZ", href: "/ultimate-wedding-dj-mesa-az/" },
 ];
 
-export const nearMeLinks = [{ label: "DJ Near Me Chandler AZ", href: "/mobile-dj-near-me-chandler-az/" }];
+export const nearMeLinks = [
+  { label: "DJ Near Me Chandler AZ", href: "/mobile-dj-near-me-chandler-az/" },
+  { label: "DJ Near Me Phoenix AZ", href: "/mobile-dj-near-me-phoenix-az/" },
+  { label: "DJ Near Me Scottsdale AZ", href: "/mobile-dj-near-me-scottsdale-az/" },
+  { label: "DJ Near Me Tempe AZ", href: "/mobile-dj-near-me-tempe-az/" },
+  { label: "DJ Near Me Gilbert AZ", href: "/mobile-dj-near-me-gilbert-az/" },
+  { label: "DJ Near Me Mesa AZ", href: "/mobile-dj-near-me-mesa-az/" },
+];

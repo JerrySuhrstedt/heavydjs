@@ -1,12 +1,39 @@
 ---
 import Sparkle from "./Sparkle.astro";
+import type { CityVariant } from "../data/cities";
 
 interface Props {
   city: string;
   serviceLabel: string;
+  variant: CityVariant;
 }
 
-const { city, serviceLabel } = Astro.props;
+const { city, serviceLabel, variant } = Astro.props;
+
+// The "near me" pages target a different keyword and carry their own copy.
+const isNearMe = variant === "near-me";
+
+const eyebrow = isNearMe
+  ? `Mobile DJ Near Me – ${city} AZ`
+  : `Ultimate ${serviceLabel} ${city} AZ | Unforgettable Events Everyone Will Talk About`;
+
+const heading = isNearMe
+  ? "Make Your Event the Ultimate Party!"
+  : "Make Your Event the Ultimate Party Everyone Talks About";
+
+const body = isNearMe
+  ? [
+      `Looking for a Mobile DJ Near Me to bring energy and excitement to your event?`,
+      `Whether it's a wedding, corporate party, or private celebration, a professional mobile DJ sets the perfect mood with expert mixing, top-tier sound equipment, and a crowd-pleasing playlist.`,
+      `From old-school classics to today's hits, a skilled DJ knows how to keep the dance floor packed.`,
+      `Book a Mobile DJ Near Me today for an unforgettable experience!`,
+    ]
+  : [
+      `With 25 years of experience, HEAVY DJs bring the beats, the energy, and the perfect vibe to your wedding, corporate event, or private party.`,
+      `We know how to keep the dance floor packed and ensure that every moment flows seamlessly, from the first announcement to the last song of the night.`,
+      `Beyond just playing music, we pride ourselves on creating unforgettable experiences tailored to your event's unique style and needs.`,
+      `Whether it's an elegant wedding reception, a high-energy corporate event, or a laid-back private party, our DJs and emcees will keep your guests entertained, engaged, and talking about your event long after it's over.`,
+    ];
 ---
 
 <section class="city-hero">
@@ -14,31 +41,11 @@ const { city, serviceLabel } = Astro.props;
     <Sparkle color="var(--blue)" size={26} class="deco deco-1" />
     <Sparkle color="var(--pink)" size={20} class="deco deco-2" />
 
-    <p class="eyebrow">
-      Ultimate {serviceLabel} {city} AZ | Unforgettable Events Everyone Will Talk About
-    </p>
-    <h1>Make Your Event the Ultimate Party Everyone Talks About</h1>
-    <p class="city-hero-sub">
-      Your {serviceLabel} {city} AZ
-    </p>
+    <p class="eyebrow">{eyebrow}</p>
+    <h1>{heading}</h1>
+    {!isNearMe && <p class="city-hero-sub">Your {serviceLabel} {city} AZ</p>}
 
-    <p class="city-hero-body">
-      With 25 years of experience, HEAVY DJs bring the beats, the energy, and the perfect vibe to
-      your wedding, corporate event, or private party.
-    </p>
-    <p class="city-hero-body">
-      We know how to keep the dance floor packed and ensure that every moment flows seamlessly,
-      from the first announcement to the last song of the night.
-    </p>
-    <p class="city-hero-body">
-      Beyond just playing music, we pride ourselves on creating unforgettable experiences tailored
-      to your event's unique style and needs.
-    </p>
-    <p class="city-hero-body">
-      Whether it's an elegant wedding reception, a high-energy corporate event, or a laid-back
-      private party, our DJs and emcees will keep your guests entertained, engaged, and talking
-      about your event long after it's over.
-    </p>
+    {body.map((para) => <p class="city-hero-body">{para}</p>)}
 
     <ul class="city-hero-list">
       <li>A packed dance floor filled with happy guests</li>

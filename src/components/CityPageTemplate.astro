@@ -11,10 +11,21 @@ interface Props {
 }
 
 const { page } = Astro.props;
-const { city, serviceLabel, datePublished } = page;
+const { city, serviceLabel, datePublished, variant } = page;
 
-const title = `Ultimate ${serviceLabel} ${city} AZ | Unforgettable Events Everyone Will Talk About | Heavy DJs`;
-const description = `Heavy DJs brings 25 years of experience as your ${serviceLabel.toLowerCase()} in ${city}, AZ — packed dance floors, seamless emceeing, unforgettable events.`;
+const isNearMe = variant === "near-me";
+
+const title = isNearMe
+  ? `Mobile DJ Near Me - ${city} AZ - Heavy DJs`
+  : `Ultimate ${serviceLabel} ${city} AZ | Unforgettable Events Everyone Will Talk About | Heavy DJs`;
+
+const description = isNearMe
+  ? `Looking for a Mobile DJ Near Me in ${city}, AZ to bring energy and excitement to your event? Expert mixing, top-tier sound, and a crowd-pleasing playlist.`
+  : `Heavy DJs brings 25 years of experience as your ${serviceLabel.toLowerCase()} in ${city}, AZ — packed dance floors, seamless emceeing, unforgettable events.`;
+
+const midHeading = isNearMe
+  ? `Mobile DJ Near Me – ${city} AZ`
+  : `Ultimate ${serviceLabel} ${city} AZ | Unforgettable Events Everyone Will Talk About`;
 const pageUrl = new URL(Astro.url.pathname, Astro.site).toString();
 
 const articleSchema = {
@@ -48,14 +59,12 @@ const articleSchema = {
 <BaseLayout title={title} description={description}>
   <script type="application/ld+json" slot="head" set:html={JSON.stringify(articleSchema)} />
 
-  <CityHero city={city} serviceLabel={serviceLabel} />
+  <CityHero city={city} serviceLabel={serviceLabel} variant={variant} />
 
   <section class="problem-section">
     <div class="container problem-inner reveal">
       <p class="eyebrow">What makes a good DJ?</p>
-      <h2>
-        Ultimate {serviceLabel} {city} AZ | Unforgettable Events Everyone Will Talk About
-      </h2>
+      <h2>{midHeading}</h2>
       <p>
         You've been to those events where the music just didn't connect with the crowd, and the
         emcee was flat, leaving guests disengaged. It's frustrating and disappointing when your
