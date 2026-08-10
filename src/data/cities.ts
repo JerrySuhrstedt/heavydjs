@@ -5,36 +5,65 @@ export interface CityPage {
   city: string;
   slug: string;
   serviceLabel: string;
+  datePublished: string;
 }
 
-const djCities = ["Chandler", "Phoenix", "Scottsdale", "Tempe", "Gilbert", "Mesa"];
-const mobileCities = ["Tempe", "Scottsdale", "Phoenix", "Mesa", "Gilbert", "Chandler"];
-const weddingCities = ["Chandler", "Phoenix", "Scottsdale", "Tempe", "Gilbert", "Mesa"];
+// Dates pulled from the original site's page-sitemap.xml lastmod values.
+const djCities: [string, string][] = [
+  ["Chandler", "2024-10-16"],
+  ["Phoenix", "2024-10-16"],
+  ["Scottsdale", "2024-10-16"],
+  ["Tempe", "2024-10-16"],
+  ["Gilbert", "2024-10-16"],
+  ["Mesa", "2024-10-16"],
+];
+
+const mobileCities: [string, string][] = [
+  ["Tempe", "2025-03-17"],
+  ["Scottsdale", "2025-03-17"],
+  ["Phoenix", "2025-03-17"],
+  ["Mesa", "2025-03-17"],
+  ["Gilbert", "2025-03-17"],
+  ["Chandler", "2025-03-17"],
+];
+
+const weddingCities: [string, string][] = [
+  ["Chandler", "2024-10-16"],
+  ["Phoenix", "2024-10-16"],
+  ["Scottsdale", "2024-10-16"],
+  ["Tempe", "2024-10-16"],
+  ["Gilbert", "2025-03-18"],
+  ["Mesa", "2024-10-16"],
+];
 
 export const cityPages: CityPage[] = [
-  ...djCities.map((city) => ({
+  ...djCities.map(([city, datePublished]) => ({
     variant: "dj" as const,
     city,
     slug: `ultimate-dj-${city.toLowerCase()}-az`,
     serviceLabel: "DJ",
+    datePublished,
   })),
-  ...mobileCities.map((city) => ({
+  ...mobileCities.map(([city, datePublished]) => ({
     variant: "mobile" as const,
     city,
     slug: `ultimate-mobile-dj-${city.toLowerCase()}-az`,
     serviceLabel: "Mobile DJ",
+    datePublished,
   })),
-  ...weddingCities.map((city) => ({
+  ...weddingCities.map(([city, datePublished]) => ({
     variant: "wedding" as const,
     city,
     slug: `ultimate-wedding-dj-${city.toLowerCase()}-az`,
     serviceLabel: "Wedding DJ",
+    datePublished,
   })),
   {
     variant: "near-me",
     city: "Chandler",
     slug: "mobile-dj-near-me-chandler-az",
     serviceLabel: "DJ Near Me",
+    datePublished: "2025-03-18",
   },
 ];
 

@@ -11,13 +11,43 @@ interface Props {
 }
 
 const { page } = Astro.props;
-const { city, serviceLabel } = page;
+const { city, serviceLabel, datePublished } = page;
+
+const title = `Ultimate ${serviceLabel} ${city} AZ | Unforgettable Events Everyone Will Talk About | Heavy DJs`;
+const description = `Heavy DJs brings 25 years of experience as your ${serviceLabel.toLowerCase()} in ${city}, AZ — packed dance floors, seamless emceeing, unforgettable events.`;
+const pageUrl = new URL(Astro.url.pathname, Astro.site).toString();
+
+const articleSchema = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  headline: title,
+  description,
+  image: `${Astro.site}images/home-wedding-dancing.webp`,
+  datePublished: `${datePublished}T00:00:00-07:00`,
+  dateModified: `${datePublished}T00:00:00-07:00`,
+  author: {
+    "@type": "Organization",
+    name: "Heavy DJs",
+    url: "https://heavydjs.com",
+  },
+  publisher: {
+    "@type": "Organization",
+    name: "Heavy DJs",
+    logo: {
+      "@type": "ImageObject",
+      url: `${Astro.site}images/logo-black.webp`,
+    },
+  },
+  mainEntityOfPage: {
+    "@type": "WebPage",
+    "@id": pageUrl,
+  },
+};
 ---
 
-<BaseLayout
-  title={`Ultimate ${serviceLabel} ${city} AZ | Unforgettable Events Everyone Will Talk About | Heavy DJs`}
-  description={`Heavy DJs brings 25 years of experience as your ${serviceLabel.toLowerCase()} in ${city}, AZ — packed dance floors, seamless emceeing, unforgettable events.`}
->
+<BaseLayout title={title} description={description}>
+  <script type="application/ld+json" slot="head" set:html={JSON.stringify(articleSchema)} />
+
   <CityHero city={city} serviceLabel={serviceLabel} />
 
   <section class="problem-section">
