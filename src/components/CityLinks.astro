@@ -1,5 +1,29 @@
 ---
-import { arizonaLocalLinks } from "../data/cities";
+import {
+  arizonaLocalLinks,
+  mobileDjLinks,
+  weddingDjLinks,
+  nearMeLinks,
+  type CityVariant,
+} from "../data/cities";
+
+interface Props {
+  variant: CityVariant;
+  city: string;
+}
+
+const { variant, city } = Astro.props;
+
+// Cross-link the sibling cities for THIS keyword, not the generic DJ list —
+// a Wedding DJ page should point at other Wedding DJ cities.
+const linksByVariant = {
+  dj: arizonaLocalLinks,
+  mobile: mobileDjLinks,
+  wedding: weddingDjLinks,
+  "near-me": nearMeLinks,
+} satisfies Record<CityVariant, { label: string; href: string }[]>;
+
+const links = linksByVariant[variant].filter((link) => !link.label.includes(city));
 ---
 
 <section class="local-section">
@@ -7,7 +31,7 @@ import { arizonaLocalLinks } from "../data/cities";
     <h2>We're Arizona Local</h2>
     <ul class="local-links">
       {
-        arizonaLocalLinks.map((link) => (
+        links.map((link) => (
           <li>
             <a href={link.href}>{link.label}</a>
           </li>
