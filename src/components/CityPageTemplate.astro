@@ -82,9 +82,13 @@ const articleSchema = {
 
 <style>
   .problem-section {
-    max-width: 760px;
-    margin-inline: auto;
     text-align: center;
+  }
+
+  /* cap the inner column, not the section — capping the section made the
+     1180px .container overflow it and scroll the page sideways */
+  .problem-inner {
+    max-width: 760px;
   }
 
   .problem-inner .eyebrow {
