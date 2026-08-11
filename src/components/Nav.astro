@@ -5,12 +5,9 @@ const navLinks = [
   { label: "Contact", href: "/contact/" },
 ];
 
-const apparelLinks = [
-  { label: "Store", href: "/store/" },
-  { label: "My Account", href: "/account/" },
-  { label: "Checkout", href: "/checkout/" },
-  { label: "Cart", href: "/cart/" },
-];
+// The Heavy DJ Apparel dropdown is hidden for now. The /store/, /account/,
+// /checkout/ and /cart/ pages still exist and are still reachable by URL —
+// only the nav entry is removed, so no links break.
 ---
 
 <header class="site-nav">
@@ -21,12 +18,6 @@ const apparelLinks = [
 
     <nav class="nav-links" aria-label="Primary">
       {navLinks.map((link) => <a href={link.href}>{link.label}</a>)}
-      <div class="dropdown">
-        <button type="button" class="dropdown-trigger">Heavy DJ Apparel</button>
-        <div class="dropdown-menu">
-          {apparelLinks.map((link) => <a href={link.href}>{link.label}</a>)}
-        </div>
-      </div>
     </nav>
 
     <a href="/contact/" class="btn btn-primary nav-cta">Get a Quote</a>
@@ -40,8 +31,6 @@ const apparelLinks = [
 
   <nav class="mobile-menu" aria-label="Mobile">
     {navLinks.map((link) => <a href={link.href}>{link.label}</a>)}
-    <span class="mobile-menu-label">Heavy DJ Apparel</span>
-    {apparelLinks.map((link) => <a href={link.href} class="mobile-sub-link">{link.label}</a>)}
     <a href="/contact/" class="btn btn-primary">Get a Quote</a>
   </nav>
 </header>
@@ -108,47 +97,6 @@ const apparelLinks = [
     transform: scaleX(1);
   }
 
-  .dropdown {
-    position: relative;
-  }
-
-  .dropdown-trigger {
-    background: none;
-    border: none;
-    font: inherit;
-    font-weight: 600;
-    color: var(--ink);
-    cursor: pointer;
-    padding: 0;
-  }
-
-  .dropdown-menu {
-    position: absolute;
-    top: calc(100% + 0.75rem);
-    left: 0;
-    background: var(--cream-soft);
-    border-radius: var(--radius-sm);
-    box-shadow: var(--shadow-lift);
-    padding: 0.5rem;
-    min-width: 160px;
-    display: none;
-    flex-direction: column;
-  }
-
-  .dropdown:hover .dropdown-menu,
-  .dropdown:focus-within .dropdown-menu {
-    display: flex;
-  }
-
-  .dropdown-menu a {
-    padding: 0.5rem 0.75rem;
-    border-radius: 0.5rem;
-  }
-
-  .dropdown-menu a:hover {
-    background: rgb(23 20 15 / 0.06);
-  }
-
   .nav-cta {
     justify-self: end;
     padding: 0.65rem 1.4rem;
@@ -183,19 +131,6 @@ const apparelLinks = [
     text-decoration: none;
     color: var(--ink);
     padding: 0.6rem 0;
-  }
-
-  .mobile-menu-label {
-    padding-top: 0.6rem;
-    color: var(--ink-soft);
-    font-size: 0.8rem;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-  }
-
-  .mobile-sub-link {
-    padding-left: 1rem !important;
-    font-weight: 500;
   }
 
   .mobile-menu .btn {
