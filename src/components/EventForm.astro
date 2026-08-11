@@ -1,141 +1,110 @@
 ---
+import { TALLY_FORM_ID, tallyEmbedSrc } from "../data/forms";
+
 interface Props {
-  cta?: string;
+  /** Optional override if a page ever needs a different Tally form. */
+  formId?: string;
+  title?: string;
 }
 
-const { cta = "Request a Quote" } = Astro.props;
+const { formId = TALLY_FORM_ID, title = "Request a Quote" } = Astro.props;
+const isConfigured = formId !== "REPLACE_WITH_TALLY_FORM_ID";
 ---
 
-<form class="card event-form" method="post" action="/api/lead" novalidate>
-  <label>
-    Full Name
-    <input type="text" name="name" placeholder="Your full name" required autocomplete="name" />
-  </label>
-  <label>
-    Email
-    <input type="email" name="email" placeholder="you@email.com" required autocomplete="email" />
-  </label>
-  <label>
-    Event Date
-    <input type="date" name="event-date" />
-  </label>
-
-  {/* Honeypot — hidden from people, catnip for bots. */}
-  <div class="hp" aria-hidden="true">
-    <label>
-      Company
-      <input type="text" name="company" tabindex="-1" autocomplete="off" />
-    </label>
-  </div>
-
-  <button type="submit" class="btn btn-primary">{cta}</button>
-  <p class="form-status" role="status" aria-live="polite"></p>
-</form>
+{
+  isConfigured ? (
+    <div class="tally-wrap">
+      <iframe
+        data-tally-src={tallyEmbedSrc(formId)}
+        loading="lazy"
+        width="100%"
+        height="240"
+        frameborder="0"
+        marginheight="0"
+        marginwidth="0"
+        title={title}
+      />
+      <noscript>
+        <p>
+          <a href={`https://tally.so/r/${formId}`} target="_blank" rel="noopener">
+            Open the booking form
+          </a>
+        </p>
+      </noscript>
+    </div>
+  ) : (
+    <div class="tally-wrap tally-missing">
+      <p>
+        <strong>Form not connected yet.</strong> Add your Tally form ID to
+        <code>src/data/forms.ts</code>.
+      </p>
+      <p>
+        In the meantime, reach us at <a href="tel:+14808269400">(480) 826-9400</a> or
+        <a href="mailto:info@heavydjs.com">info@heavydjs.com</a>.
+      </p>
+    </div>
+  )
+}
 
 <style>
-  .event-form {
-    display: flex;
-    flex-direction: column;
-    gap: 1.1rem;
+  .tally-wrap {
+    width: 100%;
   }
 
-  .event-form label {
-    display: flex;
-    flex-direction: column;
-    gap: 0.4rem;
-    font-weight: 600;
-    font-size: 0.9rem;
+  .tally-wrap iframe {
+    width: 100%;
+    border: 0;
+    display: block;
   }
 
-  .event-form input {
-    font: inherit;
-    padding: 0.75rem 0.9rem;
-    border-radius: var(--radius-sm);
-    border: 1px solid rgb(0 0 0 / 0.15);
-    background: var(--cream);
-    color: var(--ink);
+  .tally-missing {
+    background: var(--cream-soft);
+    border: 1px dashed rgb(0 0 0 / 0.25);
+    border-radius: var(--radius-md);
+    padding: 1.5rem;
   }
 
-  .event-form input:focus {
-    outline: 2px solid var(--pink);
-    outline-offset: 1px;
+  .tally-missing p {
+    margin-bottom: 0.5rem;
   }
 
-  .hp {
-    position: absolute;
-    left: -9999px;
-    width: 1px;
-    height: 1px;
-    overflow: hidden;
-  }
-
-  .form-status {
-    font-size: 0.9rem;
-    min-height: 1.2em;
-  }
-
-  .form-status[data-state="error"] {
-    color: #b3261e;
+  .tally-missing a {
+    color: var(--pink);
     font-weight: 600;
   }
 
-  .form-status[data-state="success"] {
-    color: #1b5e20;
-    font-weight: 600;
-  }
-
-  button[disabled] {
-    opacity: 0.6;
-    cursor: progress;
+  .tally-missing code {
+    background: rgb(0 0 0 / 0.06);
+    padding: 0.1rem 0.35rem;
+    border-radius: 4px;
   }
 </style>
 
 <script>
-  document.querySelectorAll<HTMLFormElement>("form.event-form").forEach((form) => {
-    const status = form.querySelector<HTMLParagraphElement>(".form-status")!;
-    const button = form.querySelector<HTMLButtonElement>("button[type=submit]")!;
-    const originalLabel = button.textContent ?? "Submit";
+  // Tally's loader swaps data-tally-src onto src and handles dynamic height.
+  // Load it once per page, even if several embeds are present.
+  const TALLY_SCRIPT = "https://tally.so/widgets/embed.js";
 
-    form.addEventListener("submit", async (event) => {
-      event.preventDefault();
-
-      if (!form.reportValidity()) return;
-
-      button.disabled = true;
-      button.textContent = "Sending…";
-      status.dataset.state = "";
-      status.textContent = "";
-
-      const data = new FormData(form);
-      data.set("source", window.location.pathname);
-
-      try {
-        const response = await fetch("/api/lead", {
-          method: "POST",
-          headers: { accept: "application/json" },
-          body: data,
-        });
-        const body = (await response.json().catch(() => null)) as
-          | { ok: boolean; error?: string }
-          | null;
-
-        if (response.ok && body?.ok) {
-          form.reset();
-          status.dataset.state = "success";
-          status.textContent = "Thanks! We got your request and will be in touch shortly.";
-          return;
-        }
-
-        status.dataset.state = "error";
-        status.textContent = body?.error ?? "Something went wrong. Please try again.";
-      } catch {
-        status.dataset.state = "error";
-        status.textContent =
-          "Couldn't reach the server. Please try again, or call (480) 826-9400.";
-      } finally {
-        button.disabled = false;
-        button.textContent = originalLabel;
-      }
+  function mountEmbeds() {
+    if (typeof (window as any).Tally !== "undefined") {
+      (window as any).Tally.loadEmbeds();
+      return;
+    }
+    // Fallback if the widget script is blocked: show the frame anyway.
+    document.querySelectorAll<HTMLIFrameElement>("iframe[data-tally-src]").forEach((frame) => {
+      if (!frame.src) frame.src = frame.dataset.tallySrc!;
     });
-  });
+  }
+
+  if (document.querySelector("iframe[data-tally-src]")) {
+    if (document.querySelector(`script[src="${TALLY_SCRIPT}"]`)) {
+      mountEmbeds();
+    } else {
+      const script = document.createElement("script");
+      script.src = TALLY_SCRIPT;
+      script.onload = mountEmbeds;
+      script.onerror = mountEmbeds;
+      document.body.appendChild(script);
+    }
+  }
 </script>

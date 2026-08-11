@@ -1,109 +1,51 @@
 # Heavy DJs
 
-Astro site for [heavydjs.com](https://heavydjs.com) — mobile DJ & emcee services for weddings,
-corporate events, and private parties in the Phoenix Valley.
-
-Mostly static, with three server-rendered routes on Cloudflare Workers: the lead API, the admin
-dashboard, and its CSV export.
+Astro static site for [heavydjs.com](https://heavydjs.com) — mobile DJ & emcee services for
+weddings, corporate events, and private parties in the Phoenix Valley.
 
 ## Structure
 
 - `src/pages/` — marketing pages plus a `[slug]` dynamic route that generates the 24 city SEO
   landing pages from `src/data/cities.ts`
-- `src/pages/api/lead.ts` — lead capture endpoint (POST)
-- `src/pages/admin/index.astro` — password-protected leads dashboard
-- `src/components/` — shared layout pieces; `EventForm.astro` is the single form used site-wide
-- `src/lib/` — lead validation, admin auth
-- `src/data/` — copy content (testimonials, FAQ, features, DJ packages, city list)
-- `schema.sql` — D1 table definition
+- `src/components/` — shared layout pieces; `EventForm.astro` embeds the Tally form
+- `src/data/` — copy content (testimonials, FAQ, features, DJ packages, city list, form ID)
+- `public/images/` — logo and event photos
 
 ## Commands
 
-| Command             | Action                                        |
-| :------------------ | :-------------------------------------------- |
-| `npm install`       | Install dependencies                          |
-| `npm run dev`       | Astro dev server (no Workers bindings)        |
-| `npm run build`     | Build to `./dist/`                            |
-| `npx wrangler dev`  | Run the built worker locally, with bindings   |
+| Command           | Action                                 |
+| :---------------- | :------------------------------------- |
+| `npm install`     | Install dependencies                   |
+| `npm run dev`     | Start local dev server                 |
+| `npm run build`   | Build the production site to `./dist/` |
+| `npm run preview` | Preview the production build locally   |
 
-`npm run dev` is fine for styling work, but the form and admin page need bindings — use
-`npx wrangler dev` after a build to exercise those.
+## Forms
 
----
+Lead capture runs on [Tally](https://tally.so). Submissions, email notifications, and exports all
+live in the Tally dashboard — nothing is stored in this repo or on Cloudflare.
 
-## One-time setup
+To connect it, put the form's ID in `src/data/forms.ts`:
 
-These need a Cloudflare login, so they have to be run by the account owner.
-
-### 1. Create the database
-
-```bash
-npx wrangler d1 create heavydjs-leads
+```ts
+export const TALLY_FORM_ID = "wAbCdE";
 ```
 
-Copy the returned `database_id` into `wrangler.jsonc`, replacing
-`PLACEHOLDER_RUN_WRANGLER_D1_CREATE`.
+The ID is the last part of the form's share link — `https://tally.so/r/wAbCdE` → `wAbCdE`.
 
-### 2. Create the table
+Until it's set, the form area renders a visible "not connected" notice with the phone number and
+email as fallback, so the page never looks broken.
 
-```bash
-npx wrangler d1 execute heavydjs-leads --remote --file=./schema.sql
+`EventForm` is used on `/contact/` and `/event-information-form/`. Drop it anywhere else with:
+
+```astro
+<EventForm title="Request a Quote" />
 ```
 
-### 3. Turn on email sending
+## Deploy
 
-Notifications send from `leads@heavydjs.com`, so that domain has to be onboarded first. This adds
-DNS records for SPF/DKIM — if the domain is already on Cloudflare it's mostly automatic.
+Cloudflare Workers, static assets only (see `wrangler.jsonc`).
 
-```bash
-npx wrangler email sending enable heavydjs.com
-npx wrangler email sending list          # confirm it's listed
-```
-
-Until this is done, leads still save to the database — only the email notification fails, and
-it's logged rather than shown to the visitor.
-
-### 4. Set the admin password
-
-```bash
-npx wrangler secret put ADMIN_PASSWORD
-```
-
-Pick the password at the prompt. It is never stored in this repo. Until it is set, `/admin/`
-stays locked to everyone.
-
-### 5. Deploy
-
-```bash
-npm run build && npx wrangler deploy
-```
-
----
-
-## How it works
-
-**Capture.** Every form on the site is the same `EventForm` component — Full Name, Email, Event
-Date. It posts to `/api/lead`, which validates, writes to D1, then emails both recipients in
-`LEAD_NOTIFY_TO`. The email's reply-to is set to the lead's address, so replying goes straight to
-the customer.
-
-A hidden `company` field acts as a honeypot: bots fill it, and those submissions are accepted with
-a normal-looking response but never stored.
-
-If the notification email fails, the lead is still saved and the visitor still sees success — the
-failure is logged. Losing the record would be worse than losing the alert.
-
-**Viewing.** `/admin/` lists the 500 most recent leads, newest first, with a CSV download at
-`/admin/?format=csv`. It's HTTP Basic auth (any username, the password from step 4), marked
-`noindex`, and sent with `cache-control: no-store`.
-
-## Local development with bindings
-
-```bash
-npm run build
-npx wrangler d1 execute heavydjs-leads --local --file=./schema.sql   # once
-echo 'ADMIN_PASSWORD=whatever-you-like' > .dev.vars                  # gitignored
-npx wrangler dev
-```
-
-Local D1 is a separate simulated database — it never touches production data.
+- Build command: `npm run build`
+- Deploy command: `npx wrangler deploy`
+- Output directory: `dist`
