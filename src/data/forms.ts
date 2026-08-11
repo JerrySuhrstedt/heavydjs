@@ -17,5 +17,10 @@ export const TALLY_SHORT_FORM_ID = "A7R2Yl";
  */
 export const FOOTER_CTA_VARIANT: "inline" | "popup" = "popup";
 
+/**
+ * transparentBackground is on so the embed inherits the amber from our own
+ * wrapper — that way we control the padding around the form, which Tally's
+ * free plan doesn't let us set inside the iframe.
+ */
 export const tallyEmbedSrc = (formId: string = TALLY_FORM_ID) =>
   `https://tally.so/embed/${formId}?alignLeft=1&hideTitle=1&transparentBackground=1&dynamicHeight=1`;

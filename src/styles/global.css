@@ -1,9 +1,22 @@
-/* Palette sampled directly from the original heavydjs.com design. */
+/*
+ * Dark theme. Brand accents are unchanged; only the surfaces and text flipped.
+ *
+ * Naming note: --cream and --ink kept their names but now mean "page surface"
+ * and "primary text" respectively, so the ~40 existing usages didn't all have
+ * to change. --on-color is the exception: it's literal black, for text sitting
+ * on the light accent cards (blue / amber / orange), which stay light.
+ */
 :root {
-  --cream: #fff6ed;
-  --cream-soft: #fffaf4;
-  --ink: #000000;
-  --ink-soft: #4a453c;
+  --cream: #121016; /* page background */
+  --cream-soft: #1c1922; /* cards and raised surfaces */
+  --panel: #1a1720; /* sections that used to be solid black */
+  --footer-bg: #0c0a0f; /* anchors the bottom of the page */
+
+  --ink: #fff6ed; /* primary text */
+  --ink-soft: rgb(255 246 237 / 0.72); /* muted text */
+  --on-color: #000000; /* text on the light accent cards */
+  --hairline: rgb(255 246 237 / 0.14);
+
   --pink: #ff44cb;
   --orange: #ff6f00;
   --blue: #a1cef5;
@@ -14,8 +27,8 @@
   --radius-lg: 2rem;
   --radius-pill: 999px;
 
-  --shadow-soft: 0 12px 30px -12px rgb(23 20 15 / 0.18);
-  --shadow-lift: 0 20px 45px -18px rgb(23 20 15 / 0.28);
+  --shadow-soft: 0 12px 30px -12px rgb(0 0 0 / 0.55);
+  --shadow-lift: 0 20px 45px -18px rgb(0 0 0 / 0.7);
 
   --container: min(1180px, 92vw);
 
@@ -138,11 +151,12 @@ section {
 
 .btn-outline:hover {
   background: var(--ink);
-  color: var(--cream);
+  color: var(--on-color);
 }
 
 .card {
   background: var(--cream-soft);
+  border: 1px solid var(--hairline);
   border-radius: var(--radius-md);
   box-shadow: var(--shadow-soft);
   padding: 1.75rem;
@@ -181,7 +195,7 @@ section {
   display: inline-flex;
   padding: 0.3rem 0.9rem;
   border-radius: var(--radius-pill);
-  background: rgb(23 20 15 / 0.06);
+  background: rgb(255 246 237 / 0.1);
   font-size: 0.85rem;
   font-weight: 600;
 }
