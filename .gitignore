@@ -25,3 +25,10 @@ pnpm-debug.log*
 
 # local tool cache
 .impeccable/
+
+# local-only secrets for wrangler dev
+.dev.vars
+.dev.vars.*
+
+# wrangler local state
+.wrangler/

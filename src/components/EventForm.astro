@@ -1,27 +1,35 @@
 ---
 interface Props {
-  action?: string;
   cta?: string;
 }
 
-const { action = "/thank-you/", cta = "Request a Quote" } = Astro.props;
+const { cta = "Request a Quote" } = Astro.props;
 ---
 
-<form class="card event-form" action={action} method="get">
+<form class="card event-form" method="post" action="/api/lead" novalidate>
   <label>
     Full Name
-    <input type="text" name="name" placeholder="Your full name" required />
+    <input type="text" name="name" placeholder="Your full name" required autocomplete="name" />
   </label>
   <label>
     Email
-    <input type="email" name="email" placeholder="you@email.com" required />
+    <input type="email" name="email" placeholder="you@email.com" required autocomplete="email" />
   </label>
   <label>
     Event Date
-    <input type="date" name="event-date" required />
+    <input type="date" name="event-date" />
   </label>
+
+  {/* Honeypot — hidden from people, catnip for bots. */}
+  <div class="hp" aria-hidden="true">
+    <label>
+      Company
+      <input type="text" name="company" tabindex="-1" autocomplete="off" />
+    </label>
+  </div>
+
   <button type="submit" class="btn btn-primary">{cta}</button>
-  <p class="form-note">More event details can be added to this form later — for now this gets us your basics.</p>
+  <p class="form-status" role="status" aria-live="polite"></p>
 </form>
 
 <style>
@@ -43,7 +51,7 @@ const { action = "/thank-you/", cta = "Request a Quote" } = Astro.props;
     font: inherit;
     padding: 0.75rem 0.9rem;
     border-radius: var(--radius-sm);
-    border: 1px solid rgb(23 20 15 / 0.15);
+    border: 1px solid rgb(0 0 0 / 0.15);
     background: var(--cream);
     color: var(--ink);
   }
@@ -53,8 +61,81 @@ const { action = "/thank-you/", cta = "Request a Quote" } = Astro.props;
     outline-offset: 1px;
   }
 
-  .form-note {
-    font-size: 0.8rem;
-    color: var(--ink-soft);
+  .hp {
+    position: absolute;
+    left: -9999px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+  }
+
+  .form-status {
+    font-size: 0.9rem;
+    min-height: 1.2em;
+  }
+
+  .form-status[data-state="error"] {
+    color: #b3261e;
+    font-weight: 600;
+  }
+
+  .form-status[data-state="success"] {
+    color: #1b5e20;
+    font-weight: 600;
+  }
+
+  button[disabled] {
+    opacity: 0.6;
+    cursor: progress;
   }
 </style>
+
+<script>
+  document.querySelectorAll<HTMLFormElement>("form.event-form").forEach((form) => {
+    const status = form.querySelector<HTMLParagraphElement>(".form-status")!;
+    const button = form.querySelector<HTMLButtonElement>("button[type=submit]")!;
+    const originalLabel = button.textContent ?? "Submit";
+
+    form.addEventListener("submit", async (event) => {
+      event.preventDefault();
+
+      if (!form.reportValidity()) return;
+
+      button.disabled = true;
+      button.textContent = "Sending…";
+      status.dataset.state = "";
+      status.textContent = "";
+
+      const data = new FormData(form);
+      data.set("source", window.location.pathname);
+
+      try {
+        const response = await fetch("/api/lead", {
+          method: "POST",
+          headers: { accept: "application/json" },
+          body: data,
+        });
+        const body = (await response.json().catch(() => null)) as
+          | { ok: boolean; error?: string }
+          | null;
+
+        if (response.ok && body?.ok) {
+          form.reset();
+          status.dataset.state = "success";
+          status.textContent = "Thanks! We got your request and will be in touch shortly.";
+          return;
+        }
+
+        status.dataset.state = "error";
+        status.textContent = body?.error ?? "Something went wrong. Please try again.";
+      } catch {
+        status.dataset.state = "error";
+        status.textContent =
+          "Couldn't reach the server. Please try again, or call (480) 826-9400.";
+      } finally {
+        button.disabled = false;
+        button.textContent = originalLabel;
+      }
+    });
+  });
+</script>

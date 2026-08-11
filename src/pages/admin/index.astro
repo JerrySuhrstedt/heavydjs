@@ -1,0 +1,264 @@
+---
+import { env } from "cloudflare:workers";
+import { isAuthorized, unauthorized } from "../../lib/auth";
+import type { LeadRow } from "../../lib/leads";
+
+export const prerender = false;
+
+if (!isAuthorized(Astro.request, env?.ADMIN_PASSWORD)) {
+  return unauthorized();
+}
+
+const url = new URL(Astro.request.url);
+const wantsCsv = url.searchParams.get("format") === "csv";
+
+let leads: LeadRow[] = [];
+let loadError: string | null = null;
+
+if (!env?.DB) {
+  loadError = "No database binding. Run the D1 setup steps in the README.";
+} else {
+  try {
+    const { results } = await env.DB.prepare(
+      `SELECT id, name, email, event_date, message, source, created_at, notified
+       FROM leads ORDER BY created_at DESC, id DESC LIMIT 500`
+    ).all<LeadRow>();
+    leads = results ?? [];
+  } catch (error) {
+    console.error("admin: query failed", error);
+    loadError = "Could not read the leads table. Has the schema been applied?";
+  }
+}
+
+if (wantsCsv && !loadError) {
+  const escapeCell = (value: unknown) => `"${String(value ?? "").replace(/"/g, '""')}"`;
+  const header = ["id", "created_at", "name", "email", "event_date", "message", "source"];
+  const csv = [
+    header.join(","),
+    ...leads.map((lead) =>
+      [
+        lead.id,
+        lead.created_at,
+        lead.name,
+        lead.email,
+        lead.event_date,
+        lead.message,
+        lead.source,
+      ]
+        .map(escapeCell)
+        .join(",")
+    ),
+  ].join("\n");
+
+  return new Response(csv, {
+    headers: {
+      "content-type": "text/csv; charset=utf-8",
+      "content-disposition": `attachment; filename="heavydjs-leads-${new Date()
+        .toISOString()
+        .slice(0, 10)}.csv"`,
+      "cache-control": "no-store",
+    },
+  });
+}
+
+const formatDate = (value: string) => {
+  const parsed = new Date(value.includes("T") ? value : `${value.replace(" ", "T")}Z`);
+  return Number.isNaN(parsed.valueOf())
+    ? value
+    : parsed.toLocaleString("en-US", { dateStyle: "medium", timeStyle: "short" });
+};
+
+Astro.response.headers.set("cache-control", "no-store");
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>Leads — Heavy DJs</title>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <header class="bar">
+      <h1>Leads</h1>
+      <div class="bar-actions">
+        <span class="count">{leads.length} total</span>
+        {!loadError && leads.length > 0 && <a class="btn" href="/admin/?format=csv">Download CSV</a>}
+        <a class="btn btn-ghost" href="/">Back to site</a>
+      </div>
+    </header>
+
+    <main>
+      {loadError && <p class="notice error">{loadError}</p>}
+
+      {!loadError && leads.length === 0 && (
+        <p class="notice">No leads yet. Submissions from the site's forms will show up here.</p>
+      )}
+
+      {
+        !loadError && leads.length > 0 && (
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Received</th>
+                  <th>Name</th>
+                  <th>Email</th>
+                  <th>Event date</th>
+                  <th>Message</th>
+                  <th>Page</th>
+                  <th>Emailed</th>
+                </tr>
+              </thead>
+              <tbody>
+                {leads.map((lead) => (
+                  <tr>
+                    <td class="nowrap">{formatDate(lead.created_at)}</td>
+                    <td>{lead.name}</td>
+                    <td>
+                      <a href={`mailto:${lead.email}`}>{lead.email}</a>
+                    </td>
+                    <td class="nowrap">{lead.event_date ?? "—"}</td>
+                    <td class="msg">{lead.message ?? "—"}</td>
+                    <td class="dim">{lead.source ?? "—"}</td>
+                    <td>{lead.notified ? "Yes" : "No"}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )
+      }
+    </main>
+
+    <style>
+      :root {
+        color-scheme: light dark;
+        --line: rgb(0 0 0 / 0.12);
+      }
+
+      body {
+        margin: 0;
+        font-family: "Public Sans", system-ui, sans-serif;
+        background: #fff6ed;
+        color: #000;
+      }
+
+      .bar {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+        align-items: center;
+        justify-content: space-between;
+        padding: 1.25rem clamp(1rem, 4vw, 2.5rem);
+        border-bottom: 1px solid var(--line);
+        background: #fff;
+        position: sticky;
+        top: 0;
+      }
+
+      h1 {
+        margin: 0;
+        font-size: 1.4rem;
+      }
+
+      .bar-actions {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+      }
+
+      .count {
+        color: #555;
+        font-size: 0.9rem;
+      }
+
+      .btn {
+        display: inline-flex;
+        padding: 0.5rem 1rem;
+        border-radius: 999px;
+        background: #ff44cb;
+        color: #fff;
+        text-decoration: none;
+        font-weight: 600;
+        font-size: 0.85rem;
+      }
+
+      .btn-ghost {
+        background: transparent;
+        color: #000;
+        border: 1px solid var(--line);
+      }
+
+      main {
+        padding: clamp(1rem, 4vw, 2.5rem);
+      }
+
+      .notice {
+        background: #fff;
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        padding: 1.25rem;
+        max-width: 60ch;
+      }
+
+      .notice.error {
+        border-color: #b3261e;
+        color: #b3261e;
+      }
+
+      .table-wrap {
+        overflow-x: auto;
+        background: #fff;
+        border: 1px solid var(--line);
+        border-radius: 12px;
+      }
+
+      table {
+        border-collapse: collapse;
+        width: 100%;
+        font-size: 0.9rem;
+      }
+
+      th,
+      td {
+        text-align: left;
+        padding: 0.75rem 1rem;
+        border-bottom: 1px solid var(--line);
+        vertical-align: top;
+      }
+
+      th {
+        background: #faf4ec;
+        font-size: 0.78rem;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        color: #555;
+        position: sticky;
+        top: 0;
+      }
+
+      tbody tr:last-child td {
+        border-bottom: 0;
+      }
+
+      .nowrap {
+        white-space: nowrap;
+      }
+
+      .dim {
+        color: #666;
+      }
+
+      .msg {
+        max-width: 40ch;
+      }
+    </style>
+  </body>
+</html>

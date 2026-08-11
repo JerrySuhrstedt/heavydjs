@@ -2,7 +2,35 @@
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "heavydjs",
   "compatibility_date": "2026-08-10",
-  "assets": {
-    "directory": "./dist"
+  "compatibility_flags": ["nodejs_compat"],
+  "observability": {
+    "enabled": true
+  },
+
+  // `main` and `assets` are supplied by @astrojs/cloudflare — don't set them here.
+
+  // Lead storage. Create with:
+  //   npx wrangler d1 create heavydjs-leads
+  // then paste the returned database_id below.
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "heavydjs-leads",
+      "database_id": "PLACEHOLDER_RUN_WRANGLER_D1_CREATE"
+    }
+  ],
+
+  // Transactional email. Requires heavydjs.com to be onboarded first:
+  //   npx wrangler email sending enable heavydjs.com
+  "send_email": [
+    {
+      "name": "EMAIL",
+      "allowed_sender_addresses": ["leads@heavydjs.com"]
+    }
+  ],
+
+  "vars": {
+    "LEAD_NOTIFY_TO": "jerrysuhrstedt@gmail.com,jj@heavydjs.com",
+    "LEAD_FROM_ADDRESS": "leads@heavydjs.com"
   }
 }
