@@ -13,9 +13,10 @@ import Sparkle from "../components/Sparkle.astro";
     </div>
   </section>
 
-  <section class="about-bio">
-    <div class="container bio-inner">
-      <Photo src="/images/about-jj-suit.webp" alt="JJ Nite, senior DJ and emcee at Heavy DJs" ratio="768 / 885" class="reveal" />
+  <section class="about-stars">
+    <div class="container stars-inner">
+      <Sparkle color="var(--pink)" size={24} class="deco" />
+
       <div class="bio-copy reveal">
         <p>
           With over three decades of experience, JJ Nite has become a renowned DJ and emcee, known
@@ -31,12 +32,7 @@ import Sparkle from "../components/Sparkle.astro";
           private party he plays.
         </p>
       </div>
-    </div>
-  </section>
 
-  <section class="about-stars">
-    <div class="container stars-inner">
-      <Sparkle color="var(--pink)" size={24} class="deco" />
       <p class="eyebrow">Emcee to the stars</p>
       <h2>A stage full of legends</h2>
       <Photo
@@ -81,15 +77,14 @@ import Sparkle from "../components/Sparkle.astro";
     font-size: 1.1rem;
   }
 
-  .bio-inner {
-    display: grid;
-    grid-template-columns: 0.8fr 1fr;
-    gap: 3rem;
-    align-items: center;
+  /* the bio now sits on the black section, so it reads light-on-dark */
+  .bio-copy {
+    margin-bottom: 3rem;
+    text-align: left;
   }
 
   .bio-copy p {
-    color: var(--ink-soft);
+    color: rgb(250 241 228 / 0.85);
     margin-bottom: 1rem;
   }
 
