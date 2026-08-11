@@ -1,0 +1,11 @@
+User-agent: *
+Allow: /
+
+# Placeholder commerce pages and the post-submit page — no search value.
+Disallow: /store/
+Disallow: /cart/
+Disallow: /checkout/
+Disallow: /account/
+Disallow: /thank-you/
+
+Sitemap: https://heavydjs.com/sitemap-index.xml
