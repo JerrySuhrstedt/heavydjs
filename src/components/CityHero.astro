@@ -10,16 +10,22 @@ interface Props {
 
 const { city, serviceLabel, variant } = Astro.props;
 
-// The "near me" pages target a different keyword and carry their own copy.
+// "near me" and "services" each target a different keyword and carry their own
+// copy, so they don't read as duplicates of the "Ultimate ..." pages.
 const isNearMe = variant === "near-me";
+const isServices = variant === "services";
 
 const eyebrow = isNearMe
   ? `Mobile DJ Near Me – ${city} AZ`
-  : `Ultimate ${serviceLabel} ${city} AZ | Unforgettable Events Everyone Will Talk About`;
+  : isServices
+    ? `DJ Services – ${city} AZ`
+    : `Ultimate ${serviceLabel} ${city} AZ | Unforgettable Events Everyone Will Talk About`;
 
 const heading = isNearMe
   ? "Make Your Event the Ultimate Party!"
-  : "Make Your Event the Ultimate Party Everyone Talks About";
+  : isServices
+    ? `Complete DJ Services in ${city}, Arizona`
+    : "Make Your Event the Ultimate Party Everyone Talks About";
 
 const body = isNearMe
   ? [
@@ -28,12 +34,19 @@ const body = isNearMe
       `From old-school classics to today's hits, a skilled DJ knows how to keep the dance floor packed.`,
       `Book a Mobile DJ Near Me today for an unforgettable experience!`,
     ]
-  : [
-      `With 25 years of experience, HEAVY DJs bring the beats, the energy, and the perfect vibe to your wedding, corporate event, or private party.`,
-      `We know how to keep the dance floor packed and ensure that every moment flows seamlessly, from the first announcement to the last song of the night.`,
-      `Beyond just playing music, we pride ourselves on creating unforgettable experiences tailored to your event's unique style and needs.`,
-      `Whether it's an elegant wedding reception, a high-energy corporate event, or a laid-back private party, our DJs and emcees will keep your guests entertained, engaged, and talking about your event long after it's over.`,
-    ];
+  : isServices
+    ? [
+        `Heavy DJs provides full DJ services in ${city}, Arizona — everything from the sound system and lighting to the emceeing that holds your timeline together.`,
+        `Every package includes a professional DJ and emcee, a playlist built around your crowd, and professional audio delivered, set up, and torn down at no extra charge.`,
+        `We cover weddings, corporate events, private parties, and house parties, plus themed nights spanning 80s throwbacks, funk and soul, disco and house, Latin rhythms, lowrider oldies, and swing.`,
+        `Tell us your date and we'll confirm availability and send a quote.`,
+      ]
+    : [
+        `With 25 years of experience, HEAVY DJs bring the beats, the energy, and the perfect vibe to your wedding, corporate event, or private party.`,
+        `We know how to keep the dance floor packed and ensure that every moment flows seamlessly, from the first announcement to the last song of the night.`,
+        `Beyond just playing music, we pride ourselves on creating unforgettable experiences tailored to your event's unique style and needs.`,
+        `Whether it's an elegant wedding reception, a high-energy corporate event, or a laid-back private party, our DJs and emcees will keep your guests entertained, engaged, and talking about your event long after it's over.`,
+      ];
 ---
 
 <section class="city-hero">
@@ -43,7 +56,7 @@ const body = isNearMe
 
     <p class="eyebrow">{eyebrow}</p>
     <h1>{heading}</h1>
-    {!isNearMe && <p class="city-hero-sub">Your {serviceLabel} {city} AZ</p>}
+    {!isNearMe && !isServices && <p class="city-hero-sub">Your {serviceLabel} {city} AZ</p>}
 
     {body.map((para) => <p class="city-hero-body">{para}</p>)}
 

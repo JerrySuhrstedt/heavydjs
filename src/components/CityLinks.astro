@@ -4,6 +4,7 @@ import {
   mobileDjLinks,
   weddingDjLinks,
   nearMeLinks,
+  servicesLinks,
   type CityVariant,
 } from "../data/cities";
 
@@ -21,6 +22,7 @@ const linksByVariant = {
   mobile: mobileDjLinks,
   wedding: weddingDjLinks,
   "near-me": nearMeLinks,
+  services: servicesLinks,
 } satisfies Record<CityVariant, { label: string; href: string }[]>;
 
 const links = linksByVariant[variant].filter((link) => !link.label.includes(city));

@@ -4,6 +4,7 @@ import CityHero from "./CityHero.astro";
 import FeatureGrid from "./FeatureGrid.astro";
 import Faq from "./Faq.astro";
 import CityLinks from "./CityLinks.astro";
+import { packages } from "../data/packages";
 import type { CityPage } from "../data/cities";
 
 interface Props {
@@ -14,18 +15,25 @@ const { page } = Astro.props;
 const { city, serviceLabel, datePublished, variant } = page;
 
 const isNearMe = variant === "near-me";
+const isServices = variant === "services";
 
 const title = isNearMe
   ? `Mobile DJ Near Me - ${city} AZ - Heavy DJs`
-  : `Ultimate ${serviceLabel} ${city} AZ | Unforgettable Events Everyone Will Talk About | Heavy DJs`;
+  : isServices
+    ? `DJ Services ${city} AZ | Weddings, Corporate Events & Parties | Heavy DJs`
+    : `Ultimate ${serviceLabel} ${city} AZ | Unforgettable Events Everyone Will Talk About | Heavy DJs`;
 
 const description = isNearMe
   ? `Looking for a Mobile DJ Near Me in ${city}, AZ to bring energy and excitement to your event? Expert mixing, top-tier sound, and a crowd-pleasing playlist.`
-  : `Heavy DJs brings 25 years of experience as your ${serviceLabel.toLowerCase()} in ${city}, AZ — packed dance floors, seamless emceeing, unforgettable events.`;
+  : isServices
+    ? `Full DJ services in ${city}, AZ — professional DJ and emcee, sound system, lighting, and a custom playlist for weddings, corporate events, and private parties.`
+    : `Heavy DJs brings 25 years of experience as your ${serviceLabel.toLowerCase()} in ${city}, AZ — packed dance floors, seamless emceeing, unforgettable events.`;
 
 const midHeading = isNearMe
   ? `Mobile DJ Near Me – ${city} AZ`
-  : `Ultimate ${serviceLabel} ${city} AZ | Unforgettable Events Everyone Will Talk About`;
+  : isServices
+    ? `DJ Services – ${city} AZ`
+    : `Ultimate ${serviceLabel} ${city} AZ | Unforgettable Events Everyone Will Talk About`;
 const pageUrl = new URL(Astro.url.pathname, Astro.site).toString();
 
 const articleSchema = {
@@ -61,35 +69,123 @@ const articleSchema = {
 
   <CityHero city={city} serviceLabel={serviceLabel} variant={variant} />
 
-  <section class="problem-section">
-    <div class="container problem-inner reveal">
-      <p class="eyebrow">What makes a good DJ?</p>
-      <h2>{midHeading}</h2>
-      <p>
-        You've been to those events where the music just didn't connect with the crowd, and the
-        emcee was flat, leaving guests disengaged. It's frustrating and disappointing when your
-        special event lacks energy.
-      </p>
-      <p>
-        Whether it's a wedding reception with guests sitting awkwardly at their tables, a
-        corporate party where no one hits the dance floor, or a private event that feels
-        lifeless—your event deserves better.
-      </p>
-      <p>
-        With Heavy DJs, a premier mobile DJ service in {city}, AZ, you get a master entertainer
-        who reads the room, plays the perfect playlist, and knows exactly how to keep your crowd
-        dancing, laughing, and having a blast. We don't just play music; we create unforgettable
-        experiences.
-      </p>
-    </div>
-  </section>
+  {
+    /*
+     * The "services" pages deliberately carry different content from the
+     * "Ultimate ..." pages: packages and pricing rather than the experience
+     * pitch, so the two clusters answer different intents instead of
+     * competing for the same query.
+     */
+    isServices ? (
+      <section class="packages-section">
+        <div class="container reveal">
+          <p class="eyebrow">What it costs</p>
+          <h2>{midHeading}</h2>
+          <p class="packages-intro">
+            Straightforward pricing for {city} events. Every package below includes a professional
+            DJ and emcee, a curated playlist, and professional audio delivered to your venue —
+            setup and tear down are included at no extra cost.
+          </p>
 
-  <FeatureGrid />
+          <ul class="package-list">
+            {packages.map((pkg) => (
+              <li>
+                <span class="package-name">
+                  {pkg.emoji} {pkg.name}
+                </span>
+                <span class="package-price">
+                  ${pkg.basePrice}
+                  <span class="package-rate">
+                    {" "}
+                    · {pkg.baseHours} hrs, ${pkg.rate}/hr after
+                  </span>
+                </span>
+              </li>
+            ))}
+          </ul>
+
+          <a href="/dj-services/" class="btn btn-outline">
+            See full package details
+          </a>
+        </div>
+      </section>
+    ) : (
+      <section class="problem-section">
+        <div class="container problem-inner reveal">
+          <p class="eyebrow">What makes a good DJ?</p>
+          <h2>{midHeading}</h2>
+          <p>
+            You've been to those events where the music just didn't connect with the crowd, and the
+            emcee was flat, leaving guests disengaged. It's frustrating and disappointing when your
+            special event lacks energy.
+          </p>
+          <p>
+            Whether it's a wedding reception with guests sitting awkwardly at their tables, a
+            corporate party where no one hits the dance floor, or a private event that feels
+            lifeless—your event deserves better.
+          </p>
+          <p>
+            With Heavy DJs, a premier mobile DJ service in {city}, AZ, you get a master entertainer
+            who reads the room, plays the perfect playlist, and knows exactly how to keep your crowd
+            dancing, laughing, and having a blast. We don't just play music; we create unforgettable
+            experiences.
+          </p>
+        </div>
+      </section>
+    )
+  }
+
+  {!isServices && <FeatureGrid />}
   <Faq />
   <CityLinks variant={variant} city={city} />
 </BaseLayout>
 
 <style>
+  .packages-section .container {
+    max-width: 760px;
+  }
+
+  .packages-section h2 {
+    font-size: clamp(1.5rem, 3.5vw, 2.1rem);
+    margin: 0.5rem 0 1.25rem;
+  }
+
+  .packages-intro {
+    color: var(--ink-soft);
+    margin-bottom: 2rem;
+  }
+
+  .package-list {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 2rem;
+  }
+
+  .package-list li {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.5rem 1.5rem;
+    padding: 0.9rem 0;
+    border-bottom: 1px solid var(--hairline);
+  }
+
+  .package-name {
+    font-weight: 600;
+  }
+
+  .package-price {
+    font-weight: 700;
+    white-space: nowrap;
+  }
+
+  .package-rate {
+    font-weight: 400;
+    font-size: 0.85rem;
+    color: var(--ink-soft);
+  }
+
   .problem-section {
     text-align: center;
   }

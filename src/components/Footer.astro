@@ -1,11 +1,17 @@
 ---
-import { arizonaLocalLinks, mobileDjLinks, weddingDjLinks, nearMeLinks } from "../data/cities";
+import {
+  arizonaLocalLinks,
+  mobileDjLinks,
+  weddingDjLinks,
+  nearMeLinks,
+  servicesLinks,
+} from "../data/cities";
 
 
 const year = new Date().getFullYear();
 
 // the original footer carries a full band of SEO city links, one row per service
-const cityRows = [arizonaLocalLinks, mobileDjLinks, weddingDjLinks, nearMeLinks];
+const cityRows = [arizonaLocalLinks, mobileDjLinks, weddingDjLinks, nearMeLinks, servicesLinks];
 ---
 
 <footer class="site-footer">

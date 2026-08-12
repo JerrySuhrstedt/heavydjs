@@ -1,4 +1,4 @@
-export type CityVariant = "dj" | "mobile" | "wedding" | "near-me";
+export type CityVariant = "dj" | "mobile" | "wedding" | "near-me" | "services";
 
 export interface CityPage {
   variant: CityVariant;
@@ -58,6 +58,15 @@ export const cityPages: CityPage[] = [
     serviceLabel: "Wedding DJ",
     datePublished,
   })),
+  // "DJ Services {city} AZ" — all six are net-new.
+  ...["Chandler", "Phoenix", "Scottsdale", "Tempe", "Gilbert", "Mesa"].map((city) => ({
+    variant: "services" as const,
+    city,
+    slug: `dj-services-${city.toLowerCase()}-az`,
+    serviceLabel: "DJ Services",
+    datePublished: "2026-08-11",
+  })),
+
   // Only Chandler exists on the original site; the other five are net-new.
   ...["Chandler", "Phoenix", "Scottsdale", "Tempe", "Gilbert", "Mesa"].map((city) => ({
     variant: "near-me" as const,
@@ -94,6 +103,15 @@ export const weddingDjLinks = [
   { label: "Wedding DJ Tempe AZ", href: "/ultimate-wedding-dj-tempe-az/" },
   { label: "Wedding DJ Gilbert AZ", href: "/ultimate-wedding-dj-gilbert-az/" },
   { label: "Wedding DJ Mesa AZ", href: "/ultimate-wedding-dj-mesa-az/" },
+];
+
+export const servicesLinks = [
+  { label: "DJ Services Chandler AZ", href: "/dj-services-chandler-az/" },
+  { label: "DJ Services Phoenix AZ", href: "/dj-services-phoenix-az/" },
+  { label: "DJ Services Scottsdale AZ", href: "/dj-services-scottsdale-az/" },
+  { label: "DJ Services Tempe AZ", href: "/dj-services-tempe-az/" },
+  { label: "DJ Services Gilbert AZ", href: "/dj-services-gilbert-az/" },
+  { label: "DJ Services Mesa AZ", href: "/dj-services-mesa-az/" },
 ];
 
 export const nearMeLinks = [
