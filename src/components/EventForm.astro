@@ -5,9 +5,15 @@ interface Props {
   /** Optional override if a page ever needs a different Tally form. */
   formId?: string;
   title?: string;
+  /**
+   * Floor for the iframe height. Tally's dynamicHeight resize doesn't always
+   * fire, which leaves the form clipped behind an inner scrollbar — this makes
+   * the embed usable even when it doesn't.
+   */
+  minHeight?: number;
 }
 
-const { formId = TALLY_FORM_ID, title = "Request a Quote" } = Astro.props;
+const { formId = TALLY_FORM_ID, title = "Request a Quote", minHeight } = Astro.props;
 const isConfigured = formId !== "REPLACE_WITH_TALLY_FORM_ID";
 ---
 
@@ -23,6 +29,7 @@ const isConfigured = formId !== "REPLACE_WITH_TALLY_FORM_ID";
         marginheight="0"
         marginwidth="0"
         title={title}
+        style={minHeight ? `min-height:${minHeight}px` : undefined}
       />
       <noscript>
         <p>

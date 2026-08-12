@@ -7,13 +7,11 @@
 /** The full enquiry form, embedded on /contact/ and /event-information-form/. */
 export const TALLY_FORM_ID = "QK9ep1";
 
-/** Short 3-field form used by the site-wide strip above the footer. */
-export const TALLY_SHORT_FORM_ID = "A7R2Yl";
-
 /**
- * Which treatment the footer strip uses:
- *  - "inline" embeds the short form directly (separate submission list in Tally)
- *  - "popup"  opens the FULL form in a modal (one submission list)
+ * Footer strip treatment. Both routes go to the same form so every lead lands
+ * in one Tally submission list.
+ *  - "popup"  opens the form in a modal
+ *  - "inline" embeds it directly in the strip
  */
 export const FOOTER_CTA_VARIANT: "inline" | "popup" = "popup";
 

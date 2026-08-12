@@ -1,11 +1,6 @@
 ---
 import Sparkle from "./Sparkle.astro";
-import {
-  TALLY_FORM_ID,
-  TALLY_SHORT_FORM_ID,
-  FOOTER_CTA_VARIANT,
-  tallyEmbedSrc,
-} from "../data/forms";
+import { TALLY_FORM_ID, FOOTER_CTA_VARIANT, tallyEmbedSrc } from "../data/forms";
 
 interface Props {
   variant?: "inline" | "popup";
@@ -42,7 +37,7 @@ const { variant = FOOTER_CTA_VARIANT } = Astro.props;
       ) : (
         <div class="cta-form">
           <iframe
-            data-tally-src={tallyEmbedSrc(TALLY_SHORT_FORM_ID)}
+            data-tally-src={tallyEmbedSrc(TALLY_FORM_ID)}
             loading="lazy"
             width="100%"
             height="220"

@@ -141,7 +141,7 @@ const articleSchema = {
 </BaseLayout>
 
 <style>
-  .packages-section .container {
+  .packages-section .container > * {
     max-width: 760px;
   }
 
@@ -187,12 +187,13 @@ const articleSchema = {
   }
 
   .problem-section {
-    text-align: center;
+    text-align: left;
   }
 
-  /* cap the inner column, not the section — capping the section made the
-     1180px .container overflow it and scroll the page sideways */
-  .problem-inner {
+  /* Cap the children, not the .container itself: .container carries
+     margin-inline:auto, so shrinking it re-centres the block and the section
+     stops lining up with the hero and the sections below. */
+  .problem-inner > * {
     max-width: 760px;
   }
 
@@ -209,6 +210,5 @@ const articleSchema = {
   .problem-inner p {
     color: var(--ink-soft);
     margin-bottom: 1rem;
-    text-align: left;
   }
 </style>
