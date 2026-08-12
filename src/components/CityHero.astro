@@ -29,6 +29,17 @@ const photoPool = [
 const seed = [...`${variant}-${city}`].reduce((n, ch) => n + ch.charCodeAt(0), 0);
 const heroPhotos = Array.from({ length: 3 }, (_, i) => photoPool[(seed + i) % photoPool.length]);
 
+// Scattered around the copy column, same treatment as the home hero. Kept
+// clear of the form column (which starts around the 55% mark) so nothing
+// overlaps it.
+const sparkles = [
+  { color: "var(--pink)", size: 30, style: "top: 2%; left: 1%;" },
+  { color: "var(--blue)", size: 36, style: "top: 5%; left: 47%;" },
+  { color: "var(--orange)", size: 18, style: "top: 24%; left: 22%;" },
+  { color: "var(--blue)", size: 20, style: "top: 48%; left: 2%;" },
+  { color: "var(--pink)", size: 16, style: "top: 62%; left: 42%;" },
+];
+
 // "near me" and "services" each target a different keyword and carry their own
 // copy, so they don't read as duplicates of the "Ultimate ..." pages.
 const isNearMe = variant === "near-me";
@@ -70,8 +81,7 @@ const body = isNearMe
 
 <section class="city-hero">
   <div class="container city-hero-inner">
-    <Sparkle color="var(--blue)" size={26} class="deco deco-1" />
-    <Sparkle color="var(--pink)" size={20} class="deco deco-2" />
+    {sparkles.map((s) => <Sparkle color={s.color} size={s.size} class="deco" style={s.style} />)}
 
     <div class="city-hero-copy">
       <p class="eyebrow">{eyebrow}</p>
@@ -200,20 +210,6 @@ const body = isNearMe
     line-height: 1;
   }
 
-  .deco {
-    position: absolute;
-  }
-
-  .deco-1 {
-    top: 0;
-    right: 10%;
-  }
-
-  .deco-2 {
-    bottom: 10%;
-    left: 8%;
-  }
-
   /* Stack below the two-column breakpoint; the form drops under the copy and
      stops being sticky so it doesn't trail the user down the page. */
   @media (max-width: 900px) {
@@ -246,9 +242,30 @@ const body = isNearMe
       height: clamp(150px, 34vw, 220px);
     }
   }
+</style>
+
+<style is:global>
+  /* Sparkle's <svg> renders inside its own component scope, so CityHero's
+     scoped styles never reach it — is:global (matching HomeHero's .hero
+     .deco pattern) is required for these rules to apply at all.
+     Without an explicit grid area, an absolutely positioned grid child also
+     gets auto-placed into its own implicit row by the grid algorithm (which
+     becomes its percentage containing block) — spanning the whole area here
+     keeps the decos from pushing the layout down and lets top/left
+     percentages resolve against the full hero. */
+  .city-hero .deco {
+    position: absolute;
+    grid-column: 1 / -1;
+    /* row 1 only (copy + form), not the photo strip in row 2 — otherwise the
+       containing block is ~1500px tall and the same percentages the home
+       hero uses land way outside the visible copy area. */
+    grid-row: 1;
+    pointer-events: none;
+    z-index: 1;
+  }
 
   @media (max-width: 640px) {
-    .deco {
+    .city-hero .deco {
       display: none;
     }
   }

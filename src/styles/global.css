@@ -134,7 +134,7 @@ section {
 
 .btn-primary {
   background: var(--pink);
-  color: #fff;
+  color: var(--on-color);
   box-shadow: var(--shadow-soft);
 }
 
