@@ -5,6 +5,7 @@ import FeatureGrid from "./FeatureGrid.astro";
 import Faq from "./Faq.astro";
 import CityLinks from "./CityLinks.astro";
 import { packages } from "../data/packages";
+import { BUSINESS, SERVICE_TYPE_BY_VARIANT } from "../data/business";
 import type { CityPage } from "../data/cities";
 
 interface Props {
@@ -12,7 +13,7 @@ interface Props {
 }
 
 const { page } = Astro.props;
-const { city, serviceLabel, datePublished, variant } = page;
+const { city, serviceLabel, variant } = page;
 
 const isNearMe = variant === "near-me";
 const isServices = variant === "services";
@@ -36,36 +37,34 @@ const midHeading = isNearMe
     : `Ultimate ${serviceLabel} ${city} AZ | Unforgettable Events Everyone Will Talk About`;
 const pageUrl = new URL(Astro.url.pathname, Astro.site).toString();
 
-const articleSchema = {
+// A Service scoped to this city, not an Article — this page sells a local
+// service, it isn't a blog post, and Google's own guidance is to use the
+// most specific accurate type rather than a generic or mismatched one.
+const serviceSchema = {
   "@context": "https://schema.org",
-  "@type": "Article",
-  headline: title,
+  "@type": "Service",
+  serviceType: SERVICE_TYPE_BY_VARIANT[variant],
+  name: title,
   description,
-  image: `${Astro.site}images/home-wedding-dancing.webp`,
-  datePublished: `${datePublished}T00:00:00-07:00`,
-  dateModified: `${datePublished}T00:00:00-07:00`,
-  author: {
-    "@type": "Organization",
-    name: "Heavy DJs",
-    url: "https://heavydjs.com",
+  url: pageUrl,
+  areaServed: {
+    "@type": "City",
+    name: city,
+    containedInPlace: { "@type": "AdministrativeArea", name: "Arizona" },
   },
-  publisher: {
-    "@type": "Organization",
-    name: "Heavy DJs",
-    logo: {
-      "@type": "ImageObject",
-      url: `${Astro.site}images/logo-black.webp`,
-    },
-  },
-  mainEntityOfPage: {
-    "@type": "WebPage",
-    "@id": pageUrl,
+  provider: {
+    "@type": "EntertainmentBusiness",
+    name: BUSINESS.name,
+    telephone: BUSINESS.telephone,
+    image: `${Astro.site}images/logo-black.webp`,
+    address: { "@type": "PostalAddress", ...BUSINESS.address },
+    areaServed: BUSINESS.areaServed.map((c) => ({ "@type": "City", name: c })),
   },
 };
 ---
 
 <BaseLayout title={title} description={description}>
-  <script type="application/ld+json" slot="head" set:html={JSON.stringify(articleSchema)} />
+  <script type="application/ld+json" slot="head" set:html={JSON.stringify(serviceSchema)} />
 
   <CityHero city={city} serviceLabel={serviceLabel} variant={variant} />
 

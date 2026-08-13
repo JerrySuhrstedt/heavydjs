@@ -8,6 +8,33 @@ import FeatureGrid from "../components/FeatureGrid.astro";
 import Faq from "../components/Faq.astro";
 import Photo from "../components/Photo.astro";
 import { shortTestimonials, longTestimonials } from "../data/testimonials";
+import { BUSINESS } from "../data/business";
+
+// Some people (Petar Cale) appear in both testimonial lists with reworded
+// quotes — dedupe by name so the same reviewer isn't counted twice in
+// reviewCount.
+const allTestimonials = [...shortTestimonials, ...longTestimonials];
+const uniqueTestimonials = allTestimonials.filter(
+  (t, i) => allTestimonials.findIndex((other) => other.name === t.name) === i
+);
+
+const reviewSchema = {
+  "@context": "https://schema.org",
+  "@type": "EntertainmentBusiness",
+  name: BUSINESS.name,
+  aggregateRating: {
+    "@type": "AggregateRating",
+    ratingValue: 5,
+    bestRating: 5,
+    reviewCount: uniqueTestimonials.length,
+  },
+  review: uniqueTestimonials.map((t) => ({
+    "@type": "Review",
+    author: { "@type": "Person", name: t.name },
+    reviewRating: { "@type": "Rating", ratingValue: t.rating ?? 5, bestRating: 5 },
+    reviewBody: t.quote,
+  })),
+};
 
 const bands = [
   { src: "/images/band-awb.webp", alt: "Average White Band" },
@@ -33,6 +60,8 @@ const valueProps = [
 ---
 
 <BaseLayout title="Home - Heavy DJs">
+  <script type="application/ld+json" slot="head" set:html={JSON.stringify(reviewSchema)} />
+
   <HomeHero />
 
   <section class="testimonial-strip">

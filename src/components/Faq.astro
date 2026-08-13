@@ -1,6 +1,24 @@
 ---
 import { faqItems } from "../data/faq";
+
+// The same six Q&As render on every page that includes this component —
+// marking them up once here means every one of those pages picks up
+// FAQPage rich-result eligibility for free.
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: faqItems.map((item) => ({
+    "@type": "Question",
+    name: item.question,
+    acceptedAnswer: {
+      "@type": "Answer",
+      text: item.answer,
+    },
+  })),
+};
 ---
+
+<script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
 
 <section class="faq-section">
   <div class="container">
