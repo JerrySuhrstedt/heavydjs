@@ -1,6 +1,7 @@
 ---
 import Sparkle from "./Sparkle.astro";
 import EventForm from "./EventForm.astro";
+import { cityLocalContent } from "../data/cityContent";
 import type { CityVariant } from "../data/cities";
 
 interface Props {
@@ -77,6 +78,12 @@ const body = isNearMe
         `Beyond just playing music, we pride ourselves on creating unforgettable experiences tailored to your event's unique style and needs.`,
         `Whether it's an elegant wedding reception, a high-energy corporate event, or a laid-back private party, our DJs and emcees will keep your guests entertained, engaged, and talking about your event long after it's over.`,
       ];
+
+// Real neighborhood/market context for this specific city, inserted right
+// after the opening line so each of the 30 pages says something a template
+// with the city name swapped in couldn't.
+const localParagraph = cityLocalContent[city];
+if (localParagraph) body.splice(1, 0, localParagraph);
 ---
 
 <section class="city-hero">
