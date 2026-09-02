@@ -18,6 +18,18 @@
       "remote": true
     }
   ],
+  // @astrojs/cloudflare enables Astro's session feature by default and
+  // auto-provisions a KV namespace for it, even though nothing in this
+  // project uses sessions. Declared explicitly (pointing at the namespace
+  // that already exists) so the adapter uses this instead of trying to
+  // auto-create a new one with the same name every deploy, which fails
+  // once one already exists (error 10014).
+  "kv_namespaces": [
+    {
+      "binding": "SESSION",
+      "id": "49ad4ba2169444d89c8b439192931f5c"
+    }
+  ],
   "observability": {
     "enabled": true
   }
