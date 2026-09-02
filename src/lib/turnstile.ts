@@ -12,7 +12,13 @@ export async function verifyTurnstile(token: string, secretKey: string, ip?: str
     body,
   });
 
-  if (!res.ok) return false;
-  const data = (await res.json()) as { success: boolean };
+  if (!res.ok) {
+    console.error("Turnstile siteverify HTTP error:", res.status, await res.text().catch(() => ""));
+    return false;
+  }
+  const data = (await res.json()) as { success: boolean; "error-codes"?: string[] };
+  if (!data.success) {
+    console.error("Turnstile siteverify rejected:", JSON.stringify(data["error-codes"]));
+  }
   return data.success === true;
 }
