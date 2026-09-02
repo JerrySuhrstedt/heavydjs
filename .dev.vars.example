@@ -1,0 +1,7 @@
+# Copy to .dev.vars (already gitignored) and fill in real values for local dev.
+# Production values are set separately via `npx wrangler secret put <NAME>`.
+
+NEON_DATABASE_URL=postgresql://user:password@host/dbname?sslmode=require
+RESEND_API_KEY=
+TURNSTILE_SECRET_KEY=
+LEAD_NOTIFICATION_EMAIL=info@heavydjs.com

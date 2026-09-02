@@ -109,11 +109,7 @@ if (localParagraph) body.splice(1, 0, localParagraph);
     </div>
 
     <aside class="city-hero-form" aria-label="Check your date">
-      {/* Tally's dynamicHeight never fires for pre-rendered embeds, so the
-          height is pinned. Measured 1011px at this column's 360px width.
-          Re-measure (with a cache-busting query param — the embed is cached
-          hard) whenever the form's fields change in Tally. */}
-      <EventForm title={`Request a quote — ${city} AZ`} minHeight={1020} />
+      <EventForm title={`Request a quote - ${city} AZ`} />
     </aside>
   </div>
 </section>

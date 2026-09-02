@@ -1,123 +1,239 @@
 ---
-import { TALLY_FORM_ID, tallyEmbedSrc } from "../data/forms";
-
 interface Props {
-  /** Optional override if a page ever needs a different Tally form. */
-  formId?: string;
   title?: string;
-  /**
-   * Floor for the iframe height. Tally's dynamicHeight resize doesn't always
-   * fire, which leaves the form clipped behind an inner scrollbar — this makes
-   * the embed usable even when it doesn't.
-   */
-  minHeight?: number;
 }
 
-const { formId = TALLY_FORM_ID, title = "Request a Quote", minHeight } = Astro.props;
-const isConfigured = formId !== "REPLACE_WITH_TALLY_FORM_ID";
+const { title = "Request a Quote" } = Astro.props;
+const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY as string | undefined;
+const sourcePage = Astro.url.pathname;
+
+const eventTypes = [
+  "Wedding",
+  "Corporate Event",
+  "Private Party",
+  "House Party",
+  "Quinceanera",
+  "Birthday Party",
+  "Other",
+];
 ---
 
-{
-  isConfigured ? (
-    <div class="tally-wrap">
-      <iframe
-        data-tally-src={tallyEmbedSrc(formId)}
-        loading="lazy"
-        width="100%"
-        height="240"
-        frameborder="0"
-        marginheight="0"
-        marginwidth="0"
-        title={title}
-        style={minHeight ? `min-height:${minHeight}px` : undefined}
-      />
-      <noscript>
-        <p>
-          <a href={`https://tally.so/r/${formId}`} target="_blank" rel="noopener">
-            Open the booking form
-          </a>
-        </p>
-      </noscript>
-    </div>
-  ) : (
-    <div class="tally-wrap tally-missing">
-      <p>
-        <strong>Form not connected yet.</strong> Add your Tally form ID to
-        <code>src/data/forms.ts</code>.
-      </p>
-      <p>
-        In the meantime, reach us at <a href="tel:+14808269400">(480) 826-9400</a> or
-        <a href="mailto:info@heavydjs.com">info@heavydjs.com</a>.
-      </p>
-    </div>
-  )
-}
+<div class="event-form-wrap" data-event-form>
+  <form class="event-form" data-form method="post" novalidate>
+    <p class="form-intro">Share a few details and we'll follow up with availability and next steps.</p>
+
+    <label class="field">
+      <span class="field-label">Full Name <span class="required">*</span></span>
+      <input type="text" name="name" placeholder="Your full name" required />
+    </label>
+
+    <label class="field">
+      <span class="field-label">Email <span class="required">*</span></span>
+      <input type="email" name="email" placeholder="you@email.com" required />
+    </label>
+
+    <label class="field">
+      <span class="field-label">Phone</span>
+      <input type="tel" name="phone" placeholder="(480) 555-0123" />
+    </label>
+
+    <label class="field">
+      <span class="field-label">Event Date</span>
+      <input type="date" name="eventDate" />
+    </label>
+
+    <label class="field">
+      <span class="field-label">What type of event are you planning?</span>
+      <select name="eventType">
+        <option value="">Select an event type</option>
+        {eventTypes.map((type) => <option value={type}>{type}</option>)}
+      </select>
+    </label>
+
+    <label class="field">
+      <span class="field-label">Where is your event?</span>
+      <input type="text" name="location" placeholder="City or venue" />
+    </label>
+
+    <label class="field">
+      <span class="field-label">Anything else we should know?</span>
+      <textarea name="message" rows="4" placeholder="Music you love, timeline, special moments, questions..."></textarea>
+    </label>
+
+    <input type="hidden" name="sourcePage" value={sourcePage} />
+
+    {
+      turnstileSiteKey ? (
+        <div class="cf-turnstile" data-sitekey={turnstileSiteKey} />
+      ) : (
+        <p class="turnstile-missing">Spam verification isn't configured yet (missing PUBLIC_TURNSTILE_SITE_KEY).</p>
+      )
+    }
+
+    <p class="form-error" data-form-error hidden></p>
+
+    <button type="submit" class="btn btn-primary form-submit" data-submit>
+      <span data-submit-label>{title}</span>
+      <span aria-hidden="true">&rarr;</span>
+    </button>
+  </form>
+
+  <div class="form-success" data-form-success hidden>
+    <p class="form-success-title">Thanks, got it!</p>
+    <p>We'll follow up shortly to confirm availability and next steps. If it's urgent, call or text (480) 826-9400.</p>
+  </div>
+</div>
 
 <style>
-  /* The amber lives on this wrapper rather than inside the iframe, so the form
-     gets real breathing room on all four sides. Tally's own inner padding
-     isn't adjustable on the free plan. */
-  .tally-wrap {
+  .event-form-wrap {
     width: 100%;
     background: var(--yellow);
     border-radius: var(--radius-md);
     padding: 20px;
+    color: var(--on-color);
   }
 
-  .tally-wrap iframe {
-    width: 100%;
-    border: 0;
-    display: block;
+  .form-intro {
+    margin: 0 0 1.1rem;
+    font-size: 0.95rem;
   }
 
-  .tally-missing {
-    background: var(--cream-soft);
-    border: 1px dashed var(--hairline);
-    border-radius: var(--radius-md);
-    padding: 1.5rem;
+  .event-form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.9rem;
   }
 
-  .tally-missing p {
-    margin-bottom: 0.5rem;
+  .field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
   }
 
-  .tally-missing a {
+  .field-label {
+    font-weight: 700;
+    font-size: 0.95rem;
+  }
+
+  .required {
     color: var(--pink);
-    font-weight: 600;
   }
 
-  .tally-missing code {
-    background: rgb(255 246 237 / 0.1);
-    padding: 0.1rem 0.35rem;
-    border-radius: 4px;
+  .field input,
+  .field select,
+  .field textarea {
+    font: inherit;
+    font-size: 0.95rem;
+    color: var(--on-color);
+    background: rgb(255 255 255 / 0.4);
+    border: 1px solid rgb(0 0 0 / 0.12);
+    border-radius: 10px;
+    padding: 0.65rem 0.8rem;
+    width: 100%;
+  }
+
+  .field input::placeholder,
+  .field textarea::placeholder {
+    color: rgb(0 0 0 / 0.5);
+  }
+
+  .field textarea {
+    resize: vertical;
+    font-family: inherit;
+  }
+
+  .field input:focus,
+  .field select:focus,
+  .field textarea:focus {
+    outline: 2px solid var(--on-color);
+    outline-offset: 1px;
+  }
+
+  .turnstile-missing {
+    font-size: 0.85rem;
+    background: rgb(0 0 0 / 0.1);
+    border-radius: 8px;
+    padding: 0.6rem 0.75rem;
+  }
+
+  .form-error {
+    background: rgb(0 0 0 / 0.85);
+    color: #fff;
+    border-radius: 8px;
+    padding: 0.6rem 0.75rem;
+    font-size: 0.9rem;
+  }
+
+  .form-submit {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .form-submit:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+
+  .form-success {
+    text-align: center;
+    padding: 1.5rem 0.5rem;
+  }
+
+  .form-success-title {
+    font-family: var(--font-display);
+    font-size: 1.4rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
   }
 </style>
 
 <script>
-  // Tally's loader swaps data-tally-src onto src and handles dynamic height.
-  // Load it once per page, even if several embeds are present.
-  const TALLY_SCRIPT = "https://tally.so/widgets/embed.js";
+  const TURNSTILE_SCRIPT = "https://challenges.cloudflare.com/turnstile/v0/api.js";
 
-  function mountEmbeds() {
-    if (typeof (window as any).Tally !== "undefined") {
-      (window as any).Tally.loadEmbeds();
-      return;
-    }
-    // Fallback if the widget script is blocked: show the frame anyway.
-    document.querySelectorAll<HTMLIFrameElement>("iframe[data-tally-src]").forEach((frame) => {
-      if (!frame.src) frame.src = frame.dataset.tallySrc!;
+  function loadTurnstile() {
+    if (!document.querySelector(".cf-turnstile")) return;
+    if (document.querySelector(`script[src^="${TURNSTILE_SCRIPT}"]`)) return;
+    const script = document.createElement("script");
+    script.src = TURNSTILE_SCRIPT;
+    script.async = true;
+    script.defer = true;
+    document.body.appendChild(script);
+  }
+
+  loadTurnstile();
+
+  document.querySelectorAll<HTMLElement>("[data-event-form]").forEach((wrap) => {
+    const form = wrap.querySelector<HTMLFormElement>("[data-form]");
+    const errorEl = wrap.querySelector<HTMLElement>("[data-form-error]");
+    const successEl = wrap.querySelector<HTMLElement>("[data-form-success]");
+    const submitBtn = wrap.querySelector<HTMLButtonElement>("[data-submit]");
+    const submitLabel = wrap.querySelector<HTMLElement>("[data-submit-label]");
+    if (!form || !errorEl || !successEl || !submitBtn || !submitLabel) return;
+
+    const originalLabel = submitLabel.textContent;
+
+    form.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      errorEl.hidden = true;
+      submitBtn.disabled = true;
+      submitLabel.textContent = "Sending...";
+
+      try {
+        const res = await fetch("/api/lead", { method: "POST", body: new FormData(form) });
+        const data = (await res.json().catch(() => ({}))) as { ok?: boolean; error?: string };
+
+        if (!res.ok || !data.ok) {
+          throw new Error(data.error || "Something went wrong. Please try again.");
+        }
+
+        form.hidden = true;
+        successEl.hidden = false;
+      } catch (err) {
+        errorEl.textContent = err instanceof Error ? err.message : "Something went wrong. Please try again.";
+        errorEl.hidden = false;
+        submitBtn.disabled = false;
+        submitLabel.textContent = originalLabel;
+      }
     });
-  }
-
-  if (document.querySelector("iframe[data-tally-src]")) {
-    if (document.querySelector(`script[src="${TALLY_SCRIPT}"]`)) {
-      mountEmbeds();
-    } else {
-      const script = document.createElement("script");
-      script.src = TALLY_SCRIPT;
-      script.onload = mountEmbeds;
-      script.onerror = mountEmbeds;
-      document.body.appendChild(script);
-    }
-  }
+  });
 </script>

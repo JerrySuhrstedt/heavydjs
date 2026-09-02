@@ -9,19 +9,25 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "deploy": "wrangler deploy --config dist/server/wrangler.json"
   },
   "dependencies": {
+    "@astrojs/cloudflare": "^14.2.6",
     "@astrojs/sitemap": "^3.7.3",
-    "astro": "^7.2.0"
+    "@neondatabase/serverless": "^1.1.0",
+    "astro": "^7.2.0",
+    "resend": "^6.25.0"
   },
   "devDependencies": {
+    "@astrojs/check": "^0.9.10",
+    "typescript": "^6.0.3",
     "wrangler": "^4.120.1"
   },
   "allowScripts": {
-    "workerd@1.20260804.1": true,
     "esbuild@0.28.2": true,
     "esbuild@0.28.1": true,
-    "fsevents@2.3.3": true
+    "fsevents@2.3.3": true,
+    "workerd@1.20260831.1": true
   }
 }

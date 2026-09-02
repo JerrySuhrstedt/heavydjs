@@ -1,15 +1,13 @@
 ---
 import Sparkle from "./Sparkle.astro";
-import { TALLY_FORM_ID, FOOTER_CTA_VARIANT, tallyEmbedSrc } from "../data/forms";
+import EventForm from "./EventForm.astro";
+import { FOOTER_CTA_VARIANT } from "../data/forms";
 
 interface Props {
   variant?: "inline" | "popup";
 }
 
 const { variant = FOOTER_CTA_VARIANT } = Astro.props;
-
-// Note: Tally's widget auto-binds the data-tally-* attributes on the popup
-// button. Don't also call Tally.openPopup() by hand — the modal opens twice.
 ---
 
 <section class="footer-cta">
@@ -24,30 +22,27 @@ const { variant = FOOTER_CTA_VARIANT } = Astro.props;
 
     {
       variant === "popup" ? (
-        <button
-          type="button"
-          class="btn btn-primary cta-button"
-          data-tally-open={TALLY_FORM_ID}
-          data-tally-layout="modal"
-          data-tally-width="520"
-          data-tally-overlay="1"
-        >
+        <button type="button" class="btn btn-primary cta-button" data-open-cta-modal>
           Check My Date
         </button>
       ) : (
         <div class="cta-form">
-          <iframe
-            data-tally-src={tallyEmbedSrc(TALLY_FORM_ID)}
-            loading="lazy"
-            width="100%"
-            height="220"
-            frameborder="0"
-            title="Check your date"
-          />
+          <EventForm title="Check My Date" />
         </div>
       )
     }
   </div>
+
+  {
+    variant === "popup" && (
+      <dialog class="cta-modal" data-cta-modal>
+        <button type="button" class="cta-modal-close" data-close-cta-modal aria-label="Close">
+          &times;
+        </button>
+        <EventForm title="Check My Date" />
+      </dialog>
+    )
+  }
 </section>
 
 <style>
@@ -83,12 +78,6 @@ const { variant = FOOTER_CTA_VARIANT } = Astro.props;
     max-width: 460px;
   }
 
-  .cta-form iframe {
-    width: 100%;
-    border: 0;
-    display: block;
-  }
-
   .cta-button {
     flex-shrink: 0;
   }
@@ -106,6 +95,46 @@ const { variant = FOOTER_CTA_VARIANT } = Astro.props;
   .cta-deco-2 {
     bottom: 4%;
     right: 42%;
+  }
+
+  .cta-modal {
+    border: 0;
+    padding: 0;
+    background: transparent;
+    max-width: 480px;
+    width: calc(100% - 2.5rem);
+    max-height: min(85vh, 900px);
+    overflow: visible;
+  }
+
+  .cta-modal::backdrop {
+    background: rgb(0 0 0 / 0.6);
+  }
+
+  .cta-modal[open] {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .cta-modal :global(.event-form-wrap) {
+    max-height: min(85vh, 900px);
+    overflow-y: auto;
+  }
+
+  .cta-modal-close {
+    position: absolute;
+    top: -0.75rem;
+    right: -0.75rem;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: var(--on-color);
+    color: #fff;
+    border: 2px solid var(--yellow);
+    font-size: 1.2rem;
+    line-height: 1;
+    cursor: pointer;
+    z-index: 1;
   }
 
   @media (max-width: 700px) {
@@ -126,41 +155,15 @@ const { variant = FOOTER_CTA_VARIANT } = Astro.props;
 </style>
 
 <script>
-  const TALLY_SCRIPT = "https://tally.so/widgets/embed.js";
+  const modal = document.querySelector<HTMLDialogElement>("[data-cta-modal]");
+  const openBtn = document.querySelector<HTMLElement>("[data-open-cta-modal]");
+  const closeBtn = document.querySelector<HTMLElement>("[data-close-cta-modal]");
 
-  function ready() {
-    const Tally = (window as any).Tally;
-    if (Tally) {
-      Tally.loadEmbeds();
-      return;
-    }
-    // If the widget script is blocked, still show any inline frames.
-    document.querySelectorAll<HTMLIFrameElement>("iframe[data-tally-src]").forEach((frame) => {
-      if (!frame.src) frame.src = frame.dataset.tallySrc!;
-    });
-  }
+  openBtn?.addEventListener("click", () => modal?.showModal());
+  closeBtn?.addEventListener("click", () => modal?.close());
 
-  const needsTally =
-    document.querySelector("iframe[data-tally-src]") || document.querySelector("[data-tally-open]");
-
-  if (needsTally) {
-    if (document.querySelector(`script[src="${TALLY_SCRIPT}"]`)) {
-      ready();
-    } else {
-      const script = document.createElement("script");
-      script.src = TALLY_SCRIPT;
-      script.onload = ready;
-      script.onerror = ready;
-      document.body.appendChild(script);
-    }
-  }
-
-  // Fallback only: if the widget script never loaded, the data attributes are
-  // inert, so open the hosted form in a new tab rather than leaving a dead button.
-  document.querySelectorAll<HTMLElement>("[data-tally-open]").forEach((button) => {
-    button.addEventListener("click", () => {
-      if ((window as any).Tally) return; // widget handles it
-      window.open(`https://tally.so/r/${button.dataset.tallyOpen}`, "_blank", "noopener");
-    });
+  // Click on the backdrop (the dialog element itself, outside its content box) closes it.
+  modal?.addEventListener("click", (event) => {
+    if (event.target === modal) modal.close();
   });
 </script>

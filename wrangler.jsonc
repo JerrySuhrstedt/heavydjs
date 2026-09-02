@@ -2,8 +2,15 @@
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "heavydjs",
   "compatibility_date": "2026-08-10",
+  "compatibility_flags": ["nodejs_compat"],
+  // main is intentionally omitted here - @astrojs/cloudflare needs it unset
+  // to resolve its own virtual entrypoint during `astro build` (it can't
+  // exist yet on a clean build). The adapter writes a fully resolved,
+  // deploy-ready copy of this config to dist/server/wrangler.json after
+  // every build - deploy with that file, not this one directly.
   "assets": {
-    "directory": "./dist"
+    "directory": "./dist/client",
+    "binding": "ASSETS"
   },
   "observability": {
     "enabled": true
