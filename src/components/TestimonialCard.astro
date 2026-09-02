@@ -46,7 +46,11 @@ const isBlue = variant === "blue";
     margin: 0;
     font-size: 1rem;
     line-height: 1.5;
-    color: var(--ink);
+    /* No color here — inherit from the figure. The default cards sit on a
+       dark card background (--ink, near-white, is correct); the "blue"
+       variant below sets the figure to --on-color (black) for its light
+       background, and this used to override that back to near-white,
+       making the quote nearly unreadable against the blue card. */
   }
 
   /* matches the original attribution: 19.2px / 600 / 28.8px, single piped line */
