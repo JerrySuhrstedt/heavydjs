@@ -12,6 +12,12 @@
     "directory": "./dist/client",
     "binding": "ASSETS"
   },
+  "send_email": [
+    {
+      "name": "EMAIL",
+      "remote": true
+    }
+  ],
   "observability": {
     "enabled": true
   }

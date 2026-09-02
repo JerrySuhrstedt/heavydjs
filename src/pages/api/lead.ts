@@ -46,7 +46,7 @@ export const POST: APIRoute = async ({ request }) => {
   // The lead is saved either way - a notification-email hiccup shouldn't
   // turn into a failure the visitor sees.
   try {
-    await sendLeadNotification({ apiKey: env.RESEND_API_KEY, to: env.LEAD_NOTIFICATION_EMAIL, lead });
+    await sendLeadNotification(env.LEAD_NOTIFICATION_EMAIL, lead);
   } catch (err) {
     console.error("Failed to send lead notification email:", err);
   }

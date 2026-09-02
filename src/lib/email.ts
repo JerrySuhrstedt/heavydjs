@@ -1,20 +1,12 @@
-import { Resend } from "resend";
+import { env } from "cloudflare:workers";
 import type { LeadInput } from "./leads";
 
-interface NotifyParams {
-  apiKey: string;
-  to: string;
-  lead: LeadInput;
-}
-
 /**
- * Requires heavydjs.com to be verified as a sending domain in Resend, or
- * this throws - caller treats a failed notification as non-fatal since the
- * lead is already saved in Neon by the time this runs.
+ * Cloudflare's own Email Service - no separate vendor, no API key. Requires
+ * the "from" domain to be onboarded in the Cloudflare dashboard (Email
+ * Service > Email Sending) under the same account as this Worker.
  */
-export async function sendLeadNotification({ apiKey, to, lead }: NotifyParams) {
-  const resend = new Resend(apiKey);
-
+export async function sendLeadNotification(to: string, lead: LeadInput) {
   const lines = [
     `Name: ${lead.name}`,
     `Email: ${lead.email}`,
@@ -27,13 +19,10 @@ export async function sendLeadNotification({ apiKey, to, lead }: NotifyParams) {
 
   if (lead.message) lines.push("", "Message:", lead.message);
 
-  const { error } = await resend.emails.send({
-    from: "Heavy DJs Website <leads@heavydjs.com>",
+  await env.EMAIL.send({
     to,
-    replyTo: lead.email,
+    from: "leads@notify.heavydjs.com",
     subject: `New lead: ${lead.name}${lead.eventType ? ` - ${lead.eventType}` : ""}`,
     text: lines.join("\n"),
   });
-
-  if (error) throw new Error(error.message);
 }
