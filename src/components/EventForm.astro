@@ -7,15 +7,7 @@ const { title = "Request a Quote" } = Astro.props;
 const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY as string | undefined;
 const sourcePage = Astro.url.pathname;
 
-const eventTypes = [
-  "Wedding",
-  "Corporate Event",
-  "Private Party",
-  "House Party",
-  "Quinceanera",
-  "Birthday Party",
-  "Other",
-];
+const eventTypes = ["Wedding", "Corporate Event", "Private Party", "House Party", "Other"];
 ---
 
 <div class="event-form-wrap" data-event-form>
@@ -111,6 +103,12 @@ const eventTypes = [
     display: flex;
     flex-direction: column;
     gap: 1.4rem;
+  }
+
+  /* display:flex above would otherwise beat the browser's default
+     [hidden] { display:none }, leaving the form visible after success. */
+  .event-form[hidden] {
+    display: none;
   }
 
   .field {
@@ -242,6 +240,13 @@ const eventTypes = [
         errorEl.hidden = false;
         submitBtn.disabled = false;
         submitLabel.textContent = originalLabel;
+
+        // A Turnstile token is single-use - once the server has checked it,
+        // re-submitting the same one is rejected as a duplicate. Reset the
+        // widget so a retry gets a fresh token instead of a confusing error.
+        const widget = wrap.querySelector<HTMLElement>(".cf-turnstile");
+        const turnstile = (window as any).turnstile;
+        if (widget && turnstile?.reset) turnstile.reset(widget);
       }
     });
   });
