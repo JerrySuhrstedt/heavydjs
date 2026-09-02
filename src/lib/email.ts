@@ -19,10 +19,18 @@ export async function sendLeadNotification(to: string, lead: LeadInput) {
 
   if (lead.message) lines.push("", "Message:", lead.message);
 
-  await env.EMAIL.send({
+  const response = await env.EMAIL.send({
     to,
     from: "leads@notify.heavydjs.com",
     subject: `New lead: ${lead.name}${lead.eventType ? ` - ${lead.eventType}` : ""}`,
     text: lines.join("\n"),
   });
+
+  // send() doesn't always throw on failure - it can come back with an error
+  // code instead (e.g. E_SENDER_NOT_VERIFIED, E_RECIPIENT_NOT_VERIFIED).
+  // Surface that explicitly rather than silently treating it as sent.
+  const result = response as unknown as { messageId?: string; error?: { code?: string; message?: string } };
+  if (result?.error) {
+    throw new Error(`Cloudflare Email Service: ${result.error.code ?? "unknown error"} - ${result.error.message ?? ""}`);
+  }
 }

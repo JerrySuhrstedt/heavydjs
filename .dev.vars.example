@@ -2,5 +2,7 @@
 # Production values are set separately via `npx wrangler secret put <NAME>`.
 
 NEON_DATABASE_URL=postgresql://user:password@host/dbname?sslmode=require
-TURNSTILE_SECRET_KEY=
+# Cloudflare's official test secret - pairs with the test site key in
+# .env.example. Matches whatever the real key's paired site key is set to.
+TURNSTILE_SECRET_KEY=1x0000000000000000000000000000000AA
 LEAD_NOTIFICATION_EMAIL=info@heavydjs.com
