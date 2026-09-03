@@ -22,6 +22,8 @@ export async function sendLeadNotification(to: string, lead: LeadInput) {
   const response = await env.EMAIL.send({
     to,
     from: "leads@notify.heavydjs.com",
+    // Hitting Reply answers the prospect directly.
+    replyTo: { email: lead.email, name: lead.name },
     subject: `New lead: ${lead.name}${lead.eventType ? ` - ${lead.eventType}` : ""}`,
     text: lines.join("\n"),
   });
