@@ -1,6 +1,7 @@
 /// <reference types="astro/client" />
 
 interface SendEmailMessage {
+  replyTo?: string | { email: string; name?: string };
   to: string;
   from: string;
   subject: string;
