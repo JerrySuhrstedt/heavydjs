@@ -123,7 +123,11 @@ const navLinks = [
     display: none;
     flex-direction: column;
     gap: 0.25rem;
-    padding: 1rem var(--container, 5%) 1.5rem;
+    /* Same width as .container. (--container is a width, not a padding:
+       using it as padding pushed the whole menu off the right edge.) */
+    width: var(--container);
+    margin-inline: auto;
+    padding: 1rem 0 1.5rem;
     font-weight: 600;
   }
 
