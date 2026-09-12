@@ -52,7 +52,7 @@ const cityRows = [arizonaLocalLinks, mobileDjLinks, weddingDjLinks, nearMeLinks,
   </nav>
 
   <div class="container footer-bottom">
-    <p>©{year} All Rights Reserved | SumoLab LLC</p>
+    <p>©{year} All Rights Reserved | SumoLab LLC <a href="https://app.heavydjs.com/" class="admin-link" rel="nofollow">&middot;</a></p>
   </div>
 </footer>
 
@@ -122,6 +122,14 @@ const cityRows = [arizonaLocalLinks, mobileDjLinks, weddingDjLinks, nearMeLinks,
 
   .city-row a:hover {
     color: var(--pink);
+  }
+
+  /* Admin shortcut. Cloudflare Access gates the app, so this is convenience,
+     not security. */
+  .admin-link {
+    color: inherit;
+    text-decoration: none;
+    padding: 0 0.4rem;
   }
 
   .footer-bottom {

@@ -4,9 +4,23 @@
     {
       "name": "heavydjs-dev",
       "runtimeExecutable": "npm",
-      "runtimeArgs": ["run", "dev"],
+      "runtimeArgs": [
+        "run",
+        "dev"
+      ],
       "port": 4321,
       "autoPort": true
+    },
+    {
+      "name": "heavydjs-app-dev",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "run",
+        "dev",
+        "--prefix",
+        "/Volumes/4TB ExtremePro/heavydjs-app"
+      ],
+      "port": 4322
     }
   ]
 }
