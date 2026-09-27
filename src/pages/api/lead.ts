@@ -1,6 +1,6 @@
 import type { APIRoute } from "astro";
 import { env } from "cloudflare:workers";
-import { insertLead } from "../../lib/leads";
+import { insertLead, recordNotifyStatus } from "../../lib/leads";
 import { sendLeadNotification } from "../../lib/email";
 import { verifyTurnstile } from "../../lib/turnstile";
 
@@ -36,8 +36,9 @@ export const POST: APIRoute = async ({ request }) => {
 
   const lead = { name, email, phone, eventDate, eventType, location, message, sourcePage };
 
+  let saved: { id: number; created_at: string };
   try {
-    await insertLead(env.NEON_DATABASE_URL, lead);
+    saved = await insertLead(env.NEON_DATABASE_URL, lead);
   } catch (err) {
     console.error("Failed to save lead:", err);
     return json({ error: "Something went wrong on our end. Please call or email us directly." }, 500);
@@ -45,10 +46,13 @@ export const POST: APIRoute = async ({ request }) => {
 
   // The lead is saved either way - a notification-email hiccup shouldn't
   // turn into a failure the visitor sees.
+  const to = env.LEAD_NOTIFICATION_EMAIL;
   try {
-    await sendLeadNotification(env.LEAD_NOTIFICATION_EMAIL, lead);
+    await sendLeadNotification(to, lead);
+    await recordNotifyStatus(env.NEON_DATABASE_URL, saved.id, `sent to ${to}`);
   } catch (err) {
     console.error("Failed to send lead notification email:", err);
+    await recordNotifyStatus(env.NEON_DATABASE_URL, saved.id, `FAILED to ${to}: ${err}`).catch(() => {});
   }
 
   return json({ ok: true }, 200);

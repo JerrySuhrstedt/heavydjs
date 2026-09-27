@@ -29,3 +29,9 @@ export async function insertLead(connectionString: string, lead: LeadInput) {
   `;
   return rows[0] as { id: number; created_at: string };
 }
+
+/** Records what happened with the notification email, for debugging. */
+export async function recordNotifyStatus(connectionString: string, id: number, status: string) {
+  const sql = neon(connectionString);
+  await sql`UPDATE leads SET notify_status = ${status.slice(0, 500)} WHERE id = ${id}`;
+}

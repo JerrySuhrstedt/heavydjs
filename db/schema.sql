@@ -16,3 +16,6 @@ CREATE TABLE IF NOT EXISTS leads (
 );
 
 CREATE INDEX IF NOT EXISTS leads_created_at_idx ON leads (created_at DESC);
+
+-- Why the notification email did or didn't go out, for debugging.
+ALTER TABLE leads ADD COLUMN IF NOT EXISTS notify_status TEXT;
