@@ -6,7 +6,9 @@ import type { LeadInput } from "./leads";
  * the "from" domain to be onboarded in the Cloudflare dashboard (Email
  * Service > Email Sending) under the same account as this Worker.
  */
+/** `to` may be a comma-separated list. */
 export async function sendLeadNotification(to: string, lead: LeadInput) {
+  const recipients = to.split(",").map((a) => a.trim()).filter(Boolean);
   const lines = [
     `Name: ${lead.name}`,
     `Email: ${lead.email}`,
@@ -20,7 +22,7 @@ export async function sendLeadNotification(to: string, lead: LeadInput) {
   if (lead.message) lines.push("", "Message:", lead.message);
 
   const response = await env.EMAIL.send({
-    to,
+    to: recipients,
     from: "leads@notify.heavydjs.com",
     // Hitting Reply answers the prospect directly.
     replyTo: { email: lead.email, name: lead.name },

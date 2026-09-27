@@ -2,7 +2,7 @@
 
 interface SendEmailMessage {
   replyTo?: string | { email: string; name?: string };
-  to: string;
+  to: string | string[];
   from: string;
   subject: string;
   text?: string;
